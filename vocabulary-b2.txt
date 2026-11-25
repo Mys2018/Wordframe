@@ -1,0 +1,73 @@
+v|We should [assess=оценить] the damage=ущерб before deciding=решением what to repair=ремонтировать.|Прежде чем решать, что ремонтировать, нужно оценить ущерб.
+v|The committee=комитет [rejected=отклонил] the proposal=предложение because it was too expensive=дорогим.|Комитет отклонил предложение из-за высокой стоимости.
+v|The new=новые rules=правила [apply=распространяются] to anyone=всех working=работающих from home=дома.|Новые правила распространяются на всех, кто работает из дома.
+v|We [encountered=столкнулись] several problems=проблемами while testing=тестировали the new=новую app=программу.|Во время тестирования новой программы мы столкнулись с несколькими проблемами.
+v|We need=нужно to [clarify=уточнить] who is responsible=отвечает for updating=обновление the records=записей.|Нужно уточнить, кто отвечает за обновление записей.
+v|These findings=данные [undermine=подрывают] confidence=доверие in the original=первоначальные results=результаты.|Эти данные подрывают доверие к первоначальным результатам.
+v|We [postponed=перенесли] the launch=запуск until all the tests=тесты had passed=прошли успешно.|Мы отложили запуск, пока все тесты не пройдут успешно.
+v|Save=сохрани a copy=копию in case you need=понадобится to [restore=восстановить] the original=исходный file=файл.|Сохрани копию на случай, если понадобится восстановить исходный файл.
+v|The festival=фестиваль aims=стремится to [promote=продвигать] local=местных artists=художников through public=открытые exhibitions=выставки.|Фестиваль помогает продвигать местных художников через открытые выставки.
+v|We must [maintain=поддерживать] the same=прежнее quality=качество as production=производство increases=растёт.|Мы должны поддерживать прежнее качество при росте производства.
+v|We [acknowledged=признали] the mistake=ошибку and corrected=исправили it immediately=сразу.|Мы признали ошибку и сразу её исправили.
+v|The designer=дизайнер [revised=переработал] the draft=черновик based=основываясь on feedback=отзывах from users=пользователей.|Дизайнер переработал черновик с учётом отзывов пользователей.
+v|They [withdraw=снимают] money=деньги from their account=счёта at the cash=банкомат machine=автомат.|Они снимают деньги со своего счёта в банкомате.
+v|The new=новый service=сервис will [benefit=принесёт пользу] people=людям without access=доступа to a car=машине.|Новый сервис поможет людям, у которых нет доступа к машине.
+v|The team=команда [struggled=с трудом пыталась] to finish=закончить the project=проект on time=в срок after two people=человека left=ушли.|Когда двое ушли, команда с трудом пыталась закончить проект в срок.
+v|The data=данные [imply=подразумевают] that demand=спрос will fall=упадёт soon=скоро.|Данные позволяют предположить, что спрос скоро упадёт.
+v|We can [attribute=объяснить] the drop=падение in sales=продаж to the higher=более высокой price=ценой.|Падение продаж можно объяснить более высокой ценой.
+v|The two teams=команды [collaborated=сотрудничали] on the same=общем research=исследовательском project=проекте.|Две команды сотрудничали в одном исследовательском проекте.
+v|The price=цена may [fluctuate=колебаться] throughout the year=года as demand=спрос changes=меняется.|Цена может колебаться в течение года вслед за спросом.
+v|The new=новый policy=порядок might [discourage=отбить желание] students=студентам from asking=задавать questions=вопросы.|Новый порядок может отбить у студентов желание задавать вопросы.
+v|We must [address=заняться решением] the issue=проблемы before it gets=становится worse=хуже.|Нужно заняться проблемой, пока она не усугубилась.
+v|We need=нужно to [tackle=взяться за] the backlog=накопившиеся задачи before taking=браться on=часть фразового глагола new=новую work=работу.|Нужно взяться за накопившиеся задачи, прежде чем брать новые.
+v|The new=новый battery=аккумулятор [eliminates=устраняет] the need=необходимость for daily=ежедневной charging=зарядки.|Новый аккумулятор избавляет от необходимости заряжать устройство каждый день.
+v|Please [retain=сохрани] the original=оригинальный receipt=чек in case of a return=возврата.|Сохрани оригинальный чек на случай возврата.
+v|The report=отчёт [highlights=выделяет] three=три risks=риска that need=требуют immediate=немедленного attention=внимания.|В отчёте выделены три риска, требующих немедленного внимания.
+v|The workers=сотрудники [raised=подняли] the issue=вопрос of unpaid=неоплаченных hours=часов at the meeting=собрании.|На собрании сотрудники подняли вопрос неоплаченных часов.
+v|We must [enforce=обеспечить соблюдение] the rules=правил consistently=последовательно, even when friends=друзья are involved=вовлечены.|Нужно последовательно следить за соблюдением правил, даже когда дело касается друзей.
+v|The course=курс [covers=охватывает] everything=всё from basic=базовой grammar=грамматики to essay=эссе writing=написания.|Курс охватывает всё от базовой грамматики до написания эссе.
+v|They [recruited=наняли] three=трёх engineers=инженеров to work=работать on the device=устройством.|Они наняли трёх инженеров для работы над устройством.
+v|We need=нужно to [comply=соблюдать] with the new=новые safety=безопасности requirements=требования.|Нам нужно соблюдать новые требования безопасности.
+v|The results=итоги [indicate=указывают] a steady=устойчивое rise=увеличение in demand=спроса.|Результаты указывают на устойчивый рост спроса.
+v|We should [establish=установить] a clear=чёткий procedure=порядок for handling=обработки returns=возвратов.|Стоит установить чёткий порядок обработки возвратов.
+n|One [drawback=недостаток] of the flat=квартиры is that it gets=становится very cold=холодной in winter=зимой.|Один недостаток квартиры в том, что зимой в ней очень холодно.
+n|You must meet=соответствовать every [requirement=требованию] before you can apply=подать заявку.|Прежде чем подавать заявку, нужно выполнить все требования.
+n|The [outcome=итог] of the vote=голосования will determine=определит who leads=возглавит the team=команду.|Итог голосования определит, кто возглавит команду.
+n|A loud=громкий alarm=сигнал sounded=раздался as a [precaution=мера предосторожности] during the test=проверки.|Во время проверки громкий сигнал прозвучал в качестве меры предосторожности.
+n|The price=цена includes=включает a two=двух year=лет [warranty=гарантию] against defects=дефектов.|В цену входит двухлетняя гарантия от дефектов.
+n|We reached=достигли a [consensus=единого мнения] after everyone=все agreed=согласились on the main=главной point=мысли.|Мы пришли к единому мнению после того, как все согласились с главной мыслью.
+n|Their [approach=подход] to the problem=проблеме is to test=проверять one change=изменение at a time=за раз.|Они подходят к проблеме так, что проверяют по одному изменению за раз.
+n|A lack=отсутствие of transport=транспорта is a [barrier=препятствие] to finding=поиску work=работы in the area=районе.|Отсутствие транспорта мешает найти работу в этом районе.
+n|Please provide=предоставь [evidence=доказательства] that the package=посылка was delivered=доставлена.|Предоставь доказательства того, что посылка была доставлена.
+n|The [extent=масштаб] of the damage=ущерба became=стал clear=ясным when we opened=открыли the case=корпус.|Масштаб повреждений стал ясен, когда мы открыли корпус.
+n|We had to change=изменить the [scope=объём] of the project=проекта and exclude=исключить two features=функции.|Нам пришлось изменить объём проекта и исключить две функции.
+n|There is a [shortage=нехватка] of rooms=номеров during the festival=фестиваля, so book=бронируй early=заранее.|Во время фестиваля не хватает номеров, поэтому бронируй заранее.
+n|The workers=сотрудники made=внесли a major=существенный [contribution=вклад] to the success=успех of the project=проекта.|Сотрудники внесли существенный вклад в успех проекта.
+n|The [forecast=прогноз] suggests=указывает rain=дождь throughout the weekend=выходных.|Прогноз обещает дождь в течение всех выходных.
+n|The city=город offered=предоставил support=поддержку to families=семьям facing=столкнувшимся with [hardship=тяжёлыми обстоятельствами].|Город предложил поддержку семьям, столкнувшимся с трудностями.
+n|Our first=первая [priority=приоритетная задача] is to make=сделать sure=с уверенностью everyone=все gets=доберутся home=домой safely=безопасно.|Первая задача — убедиться, что все безопасно доберутся домой.
+n|Her [commitment=преданность] to the project=проекту showed=проявилась in the extra=дополнительных hours=часах she worked=проработала.|Её преданность проекту проявилась в дополнительных часах работы.
+n|We allowed=допустили a small=небольшой [margin=запас] for error=ошибку in the measurements=измерениях.|Мы заложили небольшой запас на погрешность измерений.
+n|There is no [guarantee=гарантии] that the price=цена will stay=останется the same=прежней.|Нет гарантии, что цена останется прежней.
+n|The [demand=спрос] for tickets=на билеты was higher=выше than the organisers=организаторы had expected=ожидали.|Спрос на билеты оказался выше, чем ожидали организаторы.
+a|The sample=образец is [identical=идентичен] to the original=оригиналу in size=размере and colour=цвете.|Образец полностью совпадает с оригиналом по размеру и цвету.
+a|The two options=варианта are [equivalent=равноценны] in cost=стоимости and quality=качестве.|Два варианта равноценны по цене и качеству.
+a|The improvement=улучшение was [significant=существенным]. The new=новый process=процесс is twice=вдвое as fast=быстрый.|Улучшение существенное. Новый процесс вдвое быстрее.
+a|There was a [gradual=постепенный] decline=спад over several months=месяцев, rather than a sudden=резкого drop=падения.|Спад шёл постепенно несколько месяцев, без резкого падения.
+a|The figures=цифры are [consistent=согласуются] with what we saw=увидели in the previous=прошлом report=отчёте.|Цифры согласуются с тем, что мы видели в прошлом отчёте.
+a|The story=история sounds=звучит [plausible=правдоподобно], but we still need=нужны more details=подробностей.|История звучит правдоподобно, но нужны ещё подробности.
+a|The extra=дополнительные costs=расходы are [negligible=ничтожны]. They are less than one percent=процента of the budget=бюджета.|Дополнительные расходы ничтожны. Это меньше процента бюджета.
+a|The examples=примеры are [relevant=относятся к теме] to the question=вопросу we are discussing=обсуждаем.|Примеры относятся к теме вопроса, который мы обсуждаем.
+a|The supplies=запасы are [scarce=в дефиците], so we have to use=использовать them carefully=экономно.|Запасов мало, поэтому их приходится расходовать экономно.
+a|His reply=ответ was [vague=расплывчатым]. He gave=назвал no dates=дат or figures=цифр.|Он ответил расплывчато и не назвал ни дат, ни цифр.
+a|Her schedule=расписание is [demanding=изнурительное]. She works=работает twelve hours=часов a day=в день.|У неё изнурительное расписание. Она работает по двенадцать часов в день.
+a|The switch=переключатель is [faulty=неисправен]. Sometimes=иногда it does not turn=включает the lights=свет on=часть фразового глагола.|Переключатель неисправен. Иногда он не включает свет.
+a|The writer=автор remained=оставался [anonymous=анонимным]. Nobody=никто knew=знал their real=настоящего name=имени.|Автор остался анонимным. Никто не знал настоящего имени.
+a|The files=файлы are [accessible=доступны] to everyone=всем on the team=в команде.|Файлы доступны всем участникам команды.
+a|The substance=вещество is [harmless=безвредно] at the concentration=концентрации we used=использовали.|В использованной концентрации вещество безвредно.
+a|The news=новость had an [immediate=немедленный] effect=эффект. Prices=цены fell=упали within minutes=минут.|Новость дала немедленный эффект. Цены упали за несколько минут.
+a|Your answer=ответ is [accurate=точен]. It matches=совпадает с the value=значением in the original=исходной table=таблице.|Ответ точен. Он совпадает со значением в исходной таблице.
+a|The version=версия is [obsolete=устарела]. It was replaced=заменили years=годы ago=назад.|Версия устарела. Её заменили много лет назад.
+a|They are [eligible=имеют право] for the discount=на скидку because they are students=студенты.|Они имеют право на скидку, потому что они студенты.
+a|The company=компания is [liable=несёт ответственность] for any damage=ущерб caused=причинённый by its staff=сотрудниками.|Компания несёт ответственность за любой ущерб, причинённый её сотрудниками.
+

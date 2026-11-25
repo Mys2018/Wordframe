@@ -1,0 +1,74 @@
+v|Use the map=карту to [find=найти] the station=станцию.|Воспользуйся картой, чтобы найти станцию.
+v|Please [close=закрыть] the door=дверь when you leave=уходишь.|Пожалуйста, не забудь закрыть дверь, когда будешь уходить.
+v|I need=нужно to [wash=помыть] my hands=руки before dinner=ужином.|Мне нужно помыть руки перед ужином.
+v|We can [wait=подождать] here=здесь until the bus=автобус comes=приедет.|Мы можем подождать здесь, пока не приедет автобус.
+v|I want=хочу to [learn=выучить] ten=десять new=новых words=слов today=сегодня.|Я хочу выучить сегодня десять новых слов.
+v|I need=нужно to [check=проверить] the address=адрес before we leave=уйдём.|Мне нужно проверить адрес перед выходом.
+v|Can you [bring=принести] a glass=стакан of water=воды?|Можешь принести стакан воды?
+v|Please [turn on=включить] the light=свет so I can see=видеть.|Пожалуйста, нужно включить свет, чтобы мне было видно.
+v|We need=нужно to [clean=убрать] the kitchen=кухню after cooking=готовки.|После готовки нужно убрать кухню.
+v|You can [choose=выбрать] the blue=синюю shirt=рубашку or the green=зелёную one=рубашку.|Можешь выбрать синюю или зелёную рубашку.
+v|We should [leave=уйти] now=сейчас to get=попасть home=домой before dark=темноты.|Надо уйти сейчас, чтобы попасть домой до темноты.
+v|I need=нужно to [buy=купить] some eggs=яйца at the shop=магазине.|Мне нужно купить в магазине яйца.
+v|I want=хочу to [sell=продать] my old=старый bike=велосипед to get=получить some money=денег.|Я хочу продать старый велосипед, чтобы выручить немного денег.
+v|You can [drop=уронить] the glass=стакан if your hands=руки are wet=мокрые.|Ты можешь уронить стакан, если у тебя мокрые руки.
+v|We can [meet=встретиться] at the entrance=входа at six=шесть.|Мы можем встретиться у входа в шесть.
+v|I need=нужно to [send=отправить] this letter=письмо to my aunt=тёте.|Мне нужно отправить это письмо тёте.
+v|You can [rent=взять напрокат] a bike=велосипед for two=два hours=часа.|Ты можешь взять велосипед напрокат на два часа.
+v|I need=нужно to [fill=наполнить] this bottle=бутылку with water=водой.|Мне нужно наполнить эту бутылку водой.
+v|We must [cross=перейти] the road=дорогу at the green=зелёном light=свете.|Нам нужно перейти дорогу на зелёный свет.
+v|You can [follow=следовать за] me if you get=становишься lost=потерявшимся.|Если потеряешься, можешь идти за мной.
+v|I want=хочу to [try on=примерить] these jeans=джинсы before I buy=куплю them.|Я хочу примерить эти джинсы перед покупкой.
+v|I need=нужно to [fix=починить] my bike=велосипед because the brakes=тормоза do not work=работают.|Мне нужно починить велосипед, потому что тормоза не работают.
+v|We can [stay=остаться] here=здесь for one=одну more=ещё night=ночь.|Мы можем остаться здесь ещё на одну ночь.
+v|Could you [lend=одолжить мне] me your pen=ручку until the end=конца of class=урока?|Можешь одолжить мне свою ручку до конца урока?
+v|I have to [feed=покормить] the dog=собаку before I go=уйду to work=работу.|Мне надо покормить собаку до ухода на работу.
+v|We should [move=передвинуть] the sofa=диван closer=ближе to the window=окну.|Нам стоит подвинуть диван ближе к окну.
+n|Put the dirty=грязные clothes=вещи in the [basket=корзину].|Положи грязные вещи в корзину.
+n|We took=взяли a [blanket=плед] to sit=сидеть on during the picnic=пикника.|Мы взяли плед, чтобы посидеть на нём на пикнике.
+n|Please put=положи the letter=письмо in an [envelope=конверт].|Пожалуйста, положи письмо в конверт.
+n|I used=использовал a [brush=щётку] to clean=почистить my boots=ботинки.|Я почистил ботинки щёткой.
+n|Take=возьми an [umbrella=зонт] because it is raining=идёт дождь.|Возьми зонт, потому что идёт дождь.
+n|Check=проверь the [timetable=расписание] to see=узнать when the next=следующий bus=автобус leaves=отправляется.|Посмотри в расписании, когда отправляется следующий автобус.
+n|My [neighbour=сосед] lives=живёт in the flat=квартире next=рядом to mine=моей.|Мой сосед живёт в квартире рядом с моей.
+n|Put=положи the ice=лёд back=обратно in the [freezer=морозилку].|Убери лёд обратно в морозилку.
+n|Use=воспользуйся the [lift=лифтом] if you do not want=хочешь to climb=подниматься the stairs=лестнице.|Воспользуйся лифтом, если не хочешь подниматься по лестнице.
+n|The baker=пекарь put=поставил the bread=хлеб in the [oven=печь].|Пекарь поставил хлеб в печь.
+n|I put=положил my coins=монеты in my [wallet=кошелёк].|Я положил монеты в кошелёк.
+n|There is a [mirror=зеркало] above the sink=раковиной so you can see=видеть yourself=себя.|Над раковиной есть зеркало, чтобы можно было посмотреть на себя.
+n|Show=покажи your [passport=паспорт] at the border=границе to prove=подтвердить your identity=личность.|Покажи паспорт на границе, чтобы подтвердить личность.
+n|The keys=ключи were in the [drawer=выдвижном ящике] of my desk=стола.|Ключи лежали в выдвижном ящике моего стола.
+n|I use=пользуюсь a [ladder=лестницей] to reach=дотянуться до the roof=крыши.|Я пользуюсь приставной лестницей, чтобы добраться до крыши.
+n|Bring=возьми a [torch=фонарь] so we can see=видеть in the dark=темноте.|Возьми фонарь, чтобы видеть в темноте.
+n|Use=возьми a [spoon=ложку] to eat=есть the soup=суп.|Возьми ложку, чтобы поесть суп.
+n|The cat=кот slept=спал on a [pillow=подушке] beside my head=головой.|Кот спал на подушке рядом с моей головой.
+n|She put=положила the heavy=тяжёлый book=книгу on a [shelf=полку].|Она положила тяжёлую книгу на полку.
+n|We need=нужны [scissors=ножницы] to cut=разрезать the paper=бумагу.|Нам нужны ножницы, чтобы разрезать бумагу.
+n|The [ceiling=потолок] is so low=низко that I can touch=дотронуться it.|Потолок так низко, что я могу до него дотронуться.
+n|We waited=ждали on the [platform=платформе] until the train=поезд arrived=прибыл.|Мы ждали на платформе, пока не прибыл поезд.
+n|I left=оставил my [suitcase=чемодан] at the hotel=отеле before exploring=осмотра the city=города.|Я оставил чемодан в отеле перед прогулкой по городу.
+n|We followed=шли по the [path=тропинке] through the forest=лес.|Мы шли через лес по тропинке.
+n|We use=используем this [tap=кран] to get=набирать cold=холодную water=воду.|Мы набираем холодную воду из этого крана.
+a|The road=дорога is [wide=широкая] enough=достаточно for three=трёх buses=автобусов.|Дорога достаточно широкая для трёх автобусов.
+a|The floor=пол is [wet=мокрый] because I just=только что washed=помыл it.|Пол мокрый, потому что я только что его помыл.
+a|His shoes=обувь are [dirty=грязная] after a walk=прогулки in the mud=грязи.|После прогулки по грязи у него грязная обувь.
+a|I am [hungry=голоден] because I skipped=пропустил breakfast=завтрак.|Я голоден, потому что пропустил завтрак.
+a|This soup=суп is [salty=солёный]. I added=добавил too much=слишком много salt=соли.|Суп солёный. Я добавил слишком много соли.
+a|The hall=зал is [dark=тёмный] when the lights=свет are off=выключен.|Когда выключен свет, в зале темно.
+a|The sky=небо is [clear=ясное]. I cannot see=видеть any clouds=облаков.|Небо ясное. Я не вижу ни одного облака.
+a|Our teacher=учитель is [kind=добрый] and helps=помогает everyone=всем.|Наш учитель добрый и помогает всем.
+a|The towel=полотенце is [dry=сухое] after an hour=часа in the sun=на солнце.|Полотенце высохло за час на солнце.
+a|The test=тест was [easy=лёгкий]. Everyone=все finished=закончили in five=пять minutes=минут.|Тест был лёгким. Все закончили за пять минут.
+a|The music=музыка was so [loud=громкой] that we could not hear=слышать each=друг other=друга.|Музыка была такой громкой, что мы не слышали друг друга.
+a|The glass=стакан is [broken=разбит]. There are pieces=осколки on the floor=полу.|Стакан разбит. На полу осколки.
+a|The child=ребёнок is [awake=бодрствует] and playing=играет with a toy=игрушкой.|Ребёнок уже не спит и играет с игрушкой.
+a|The pool=бассейн is [deep=глубокий]. I cannot touch=дотронуться the bottom=до дна.|Бассейн глубокий. Я не достаю до дна.
+a|The seat=место is [vacant=свободное]. Nobody=никто is sitting=сидит there=там.|Место свободно. На нём никто не сидит.
+a|The clothes=одежда are [drying=сохнет] outside=снаружи in the wind=на ветру.|Одежда сохнет на улице на ветру.
+a|We are [ready=готовы] to leave=уходить. Our bags=сумки are packed=собраны.|Мы готовы уходить. Наши сумки собраны.
+a|The room=комната is [warm=тёплая] because the heater=обогреватель is on=включён.|В комнате тепло, потому что включён обогреватель.
+a|The bus=автобус is [early=приехал раньше] today=сегодня. It is usually=обычно here=здесь at nine=девять.|Автобус сегодня приехал раньше. Обычно он здесь в девять.
+a|I am [busy=занят] right=прямо now=сейчас and cannot talk=поговорить.|Я сейчас занят и не могу говорить.
+a|The lake=озеро is [shallow=мелкое] near the shore=берега. The water=вода only=только reaches=доходит to my knees=коленей.|У берега озеро мелкое. Вода доходит только до колен.
+a|This jacket=куртка is [loose=свободная]. I need=нужен a smaller=меньший size=размер.|Эта куртка сидит свободно. Мне нужен размер поменьше.
+

@@ -1,0 +1,73 @@
+v|We should [avoid=избегать] this road=дороги because it gets=становится busy=оживлённой after five=пяти.|Нам стоит избегать этой дороги, потому что после пяти движение на ней оживлённое.
+v|I need=нужно to [confirm=подтвердить] my reservation=бронь before Friday=пятницы.|Мне нужно подтвердить бронь до пятницы.
+v|We should [compare=сравнить] prices=цены before we choose=выберем a hotel=отель.|Нам стоит сравнить цены, прежде чем выбрать отель.
+v|I tried=попытался to [persuade=уговорить] him to come=пойти with us.|Я попытался уговорить его пойти с нами.
+v|She managed=смогла to [solve=решить] the problem=проблему without any help=помощи.|Она смогла решить проблему без чьей-либо помощи.
+v|We had to [repair=починить] the roof=крышу after the storm=бури.|После бури нам пришлось починить крышу.
+v|Feel=чувствуй free=себя свободно to [mention=упомянуть] my name=имя if they ask=спросят how you heard=узнал about the job=работе.|Если спросят, как ты узнал о работе, можешь упомянуть моё имя.
+v|We must [protect=защитить] the plants=растения from the frost=мороза tonight=сегодня ночью.|Сегодня ночью нам нужно защитить растения от мороза.
+v|Could you [recommend=порекомендовать] a restaurant=ресторан near the station=вокзала?|Можешь порекомендовать ресторан рядом с вокзалом?
+v|We [agreed=согласились] to split=разделить the bill=счёт equally=поровну.|Мы согласились разделить счёт поровну.
+v|I hope=надеюсь we can [keep in touch=оставаться на связи] after you move=переедешь abroad=за границу.|Надеюсь, мы сможем оставаться на связи после твоего переезда за границу.
+v|We will [pick up=заберём] the parcel=посылку from the post=почтового office=отделения tomorrow=завтра.|Завтра заберём посылку с почты.
+v|I stopped=остановился to [check in=зарегистрироваться] at the hotel=отеле before dinner=ужином.|Я заехал зарегистрироваться в отеле перед ужином.
+v|Can you [hand in=сдать] your report=отчёт before the class=занятия ends=закончится?|Можешь сдать отчёт до конца занятия?
+v|I [gave up=бросил] smoking=курить last=в прошлом year=году.|Я бросил курить в прошлом году.
+v|Can you [figure out=разобраться] why the printer=принтер stops=останавливается halfway=на полпути through each page=страницу?|Можешь разобраться, почему принтер останавливается на середине каждой страницы?
+v|We want=хотим to [improve=улучшить] the service=сервис after hearing=услышав your feedback=отзывы.|Мы хотим улучшить сервис, выслушав ваши отзывы.
+v|Feel=чувствуй free=себя свободно to [complain=пожаловаться] if the room=номер is noisy=шумный.|Если в номере шумно, можешь пожаловаться.
+v|I [apologised=извинился] for arriving=приход late=поздно.|Я извинился за опоздание.
+v|The guide=гид [warned=предупредил] us that the path=тропа was slippery=скользкой.|Гид предупредил нас, что тропа скользкая.
+v|She [admitted=признала] that the mistake=ошибка was hers=её.|Она признала, что ошибка была её.
+v|The neighbour=сосед [offered=предложил] to carry=поднести my bags=сумки upstairs=наверх.|Сосед предложил отнести мои сумки наверх.
+v|We should [arrange=организовать] transport=транспорт for the guests=гостей before the event=мероприятия.|Нам стоит организовать транспорт для гостей до мероприятия.
+v|Can you [explain=объяснить] why the final=итоговый price=ценник is higher=выше than expected=ожидалось?|Можешь объяснить, почему итоговая цена выше ожидаемой?
+v|I [noticed=заметил] a crack=трещину in the glass=стекле when the sun=солнце came=вышло out=наружу.|Я заметил трещину на стекле, когда выглянуло солнце.
+v|You should [apply=подать заявку] for the job=работу before the closing=крайней date=даты.|Тебе стоит подать заявку на работу до крайнего срока.
+v|The children=дети [gathered=собрались] around the teacher=учителя to hear=услышать the story=историю.|Дети собрались вокруг учителя, чтобы услышать историю.
+v|We [set off=отправились] before dawn=рассветом to avoid=избежать traffic=пробок.|Мы отправились до рассвета, чтобы избежать пробок.
+v|Could you [point out=указать] the exact=точное place=место on the map=карте?|Можешь указать точное место на карте?
+v|The train=поезд [arrives=прибывает] at platform=платформу four=четыре in ten=десять minutes=минут.|Поезд прибудет на четвёртую платформу через десять минут.
+v|We [discovered=обнаружили] an old=старую photo=фотографию behind the mirror=зеркалом.|Мы обнаружили старую фотографию за зеркалом.
+v|I [managed=сумел] to finish=закончить the test=тест before time=время ran=закончилось out=часть фразового глагола.|Я сумел закончить тест, пока время не вышло.
+n|The train=поезд was late=опоздал because of a [delay=задержки] at the previous=предыдущей station=станции.|Поезд опоздал из-за задержки на предыдущей станции.
+n|The [audience=зрители] clapped=зааплодировали when the show=шоу ended=закончилось.|Когда шоу закончилось, зрители зааплодировали.
+n|The [entrance=вход] to the museum=музей is across from the shop=магазина.|Вход в музей находится напротив магазина.
+n|Each [guest=гость] got=получил a small=маленький gift=подарок after the dinner=ужина.|Каждый гость получил небольшой подарок после ужина.
+n|The [journey=путешествие] took=заняло three=три hours=часа by train=на поезде.|Путешествие на поезде заняло три часа.
+n|Keep=сохрани the box=коробку in case you need=понадобится a [refund=возврат денег].|Сохрани коробку на случай, если понадобится вернуть деньги.
+n|Her [reply=ответ] was short=коротким. She wrote=написала just=всего two=два words=слова.|Её ответ был коротким. Она написала всего два слова.
+n|The [purpose=цель] of this exercise=упражнения is to practise=отработать irregular=неправильные verbs=глаголы.|Цель упражнения — отработать неправильные глаголы.
+n|The [owner=хозяин] of the café=кафе greets=приветствует every customer=клиента.|Хозяин кафе приветствует каждого посетителя.
+n|Our flight=рейс costs=стоит less if we take=берём only hand=ручная [luggage=кладь].|Наш рейс стоит дешевле, если мы берём только ручную кладь.
+n|The tour=тур is popular=популярен, so book=забронируй a place=место in [advance=заранее].|Тур популярен, поэтому забронируй место заранее.
+n|I missed=пропустил the [announcement=объявление] because I was wearing=носил headphones=наушники.|Я пропустил объявление, потому что был в наушниках.
+n|There is a ten=десять percent=процентов [discount=скидка] for students=студентов.|Для студентов действует скидка десять процентов.
+n|She has plenty=много of [experience=опыта] teaching=преподавания young=маленьким children=детям.|У неё большой опыт преподавания маленьким детям.
+n|That is a good=хороший [opportunity=шанс] to practise=попрактиковать your English=английский.|Это хороший шанс попрактиковать английский.
+n|Please write=напиши your [surname=фамилию] below your first=имени name=имя.|Напиши фамилию под именем.
+n|I paid=заплатил a small=небольшой [fee=сбор] to join=вступить the club=клуб.|Я внёс небольшой сбор за вступление в клуб.
+n|The [border=граница] between the two=двумя countries=странами follows=проходит по the river=реке.|Граница между двумя странами проходит по реке.
+n|Our [connection=пересадка] in Paris=Париже gives=даёт us an hour=час to change=сменить planes=самолёты.|В Париже у нас будет час на пересадку между самолётами.
+n|The main=главная [advantage=плюс] of this flat=квартиры is its location=расположение near work=работы.|Главный плюс этой квартиры — близость к работе.
+n|My manager=руководитель asked=попросил for a [summary=краткое изложение] of the meeting=встречи.|Руководитель попросил кратко изложить, что обсуждалось на встрече.
+n|We asked=попросили for [permission=разрешение] to take=делать photos=снимки inside the museum=музея.|Мы попросили разрешение фотографировать внутри музея.
+a|I am [grateful=благодарен] for your help=помощь with the move=переездом.|Я благодарен за помощь с переездом.
+a|This plug=вилка is [suitable=подходит] for the sockets=розеток in this hotel=отеле.|Эта вилка подходит к розеткам в отеле.
+a|The glass=стакан is [fragile=хрупкий], so wrap=заверни it carefully=аккуратно.|Стакан хрупкий, поэтому аккуратно его заверни.
+a|We were [disappointed=разочарованы] because the concert=концерт lasted=длился only half=половину an hour=часа.|Мы разочаровались, потому что концерт длился всего полчаса.
+a|He is [familiar=знаком] with the route=маршрутом because he walks=ходит it every day=день.|Ему знаком этот маршрут, потому что он ходит по нему каждый день.
+a|This seat=место is [available=свободно]. Nobody=никто has booked=забронировал it.|Место свободно. Никто его не забронировал.
+a|She was [anxious=встревожена] before the interview=собеседованием and could not sleep=уснуть.|Перед собеседованием она тревожилась и не могла уснуть.
+a|I was [embarrassed=смущён] when I forgot=забыл his name=имя in front=перед of everyone=всеми.|Мне стало неловко, когда я при всех забыл его имя.
+a|The teacher=преподаватель was [strict=строгим] and checked=проверял every detail=деталь.|Преподаватель был строгим и проверял каждую деталь.
+a|We are [responsible=ответственны] for keeping=поддержание the room=комнаты clean=в чистоте.|Мы отвечаем за чистоту комнаты.
+a|The directions=указания were [confusing=запутанными], and we got=оказались lost=потерявшимися twice=дважды.|Указания были запутанными, и мы дважды заблудились.
+a|The lift=лифт is out=вне of order=строя, so the stairs=лестница are the only [practical=реальный] option=вариант.|Лифт сломан, поэтому лестница — единственный реальный вариант.
+a|We took=нашли a [direct=прямой] flight=рейс with no stops=остановок.|Мы полетели прямым рейсом без остановок.
+a|I prefer=предпочитаю [ordinary=обычные] shoes=туфли for work=работы, without bright=ярких colours=цветов.|Для работы я предпочитаю обычные туфли без ярких расцветок.
+a|The team=команда stayed=оставалась [calm=спокойной] despite the pressure=давление.|Команда сохраняла спокойствие, несмотря на давление.
+a|She was [curious=ей было любопытно] about what was inside the box=коробки.|Ей было любопытно, что лежит в коробке.
+a|The area=район is [remote=отдалённый]. The nearest=ближайший town=город is hours=несколько часов away=пути.|Район отдалённый. До ближайшего города несколько часов пути.
+a|My bus=автобус is usually=обычно late=опаздывает, so I was [surprised=удивлён] when it arrived=приехал on time=вовремя.|Мой автобус обычно опаздывает, поэтому я удивился, когда он приехал вовремя.
+
