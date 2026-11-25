@@ -86,14 +86,57 @@ for (const card of additions) {
   card.hint = '';
 
 }
+const gameLevel = 'Casualties Unknown';
+const gameCards = fs.readFileSync('vocabulary-casualties-unknown.txt', 'utf8').trim().split(/\r?\n/)
+  .filter(line => line && !line.startsWith('#')).map(line => {
+    const fields = line.split('|');
+    const [part, word, right, game, gameTranslation, simple, simpleTranslation] = fields;
+    const id = 'cu-' + word.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    const contexts = [[game, gameTranslation], [simple, simpleTranslation]].map(([sentence, translation]) => ({sentence, translation}));
+    const targetPattern = /\[([^\[\]]+)\]/g;
+    if (fields.length !== 7 || fields.some(field => !field || field !== field.trim() || /[<>&]/.test(field))
+      || !['noun', 'adj', 'verb'].includes(part) || game === simple
+      || contexts.some(({sentence, translation}) => {
+        const targets = [...sentence.matchAll(targetPattern)];
+        return targets.length !== 1 || /[\[\]\p{Script=Cyrillic}]/u.test(sentence.replace(targetPattern, '$1'))
+          || !/\p{Script=Cyrillic}/u.test(translation);
+      })) {
+      throw new Error('Malformed game vocabulary row: ' + line);
+    }
+    return { id, level: gameLevel, word, right, contexts, part };
+  });
+
+const gameGlosses = new Map(gameCards.filter(card => /^[a-z]+$/.test(card.word)).map(card => [card.word, card.right]));
+for (const card of gameCards) {
+  const alternatives = gameCards.filter(candidate => candidate.part === card.part && candidate.right !== card.right);
+  const start = [...card.id].reduce((total, char) => (total * 31 + char.charCodeAt(0)) >>> 0, 7);
+  const options = new Set([card.right]);
+  for (let i = 0; options.size < 4 && i < alternatives.length; i++) {
+    const { right } = alternatives[(start + i) % alternatives.length];
+    if (!card.contexts.some(context => context.translation.toLowerCase().includes(right.toLowerCase()))) options.add(right);
+  }
+  if (options.size !== 4) throw new Error('Insufficient choices: ' + card.word);
+  card.options = [...options];
+  for (const context of card.contexts) {
+    const tokens = context.sentence.replace(/\[[^\]]+\]/, '').match(wordPattern) ?? [];
+    context.glosses = tokens.map(token => common[token.toLowerCase()] ?? gameGlosses.get(token.toLowerCase()) ?? null);
+  }
+}
+
 const output = base + '\n// Expanded vocabulary\nconst expandedVocabulary = [\n'
   + additions.map(({ part, ...card }) => '  ' + JSON.stringify(card)).join(',\n')
   + '\n];\nfor (const { glosses: context, ...card } of expandedVocabulary) {\n'
   + "  card.id = card.level + '-extra-' + card.word.toLowerCase().replace(/[^a-z]+/g, '-');\n"
-  + '  words.push(card);\n  glosses[card.sentence] = context;\n}\n';
+  + '  words.push(card);\n  glosses[card.sentence] = context;\n}\n'
+  + '\nconst gameVocabulary = [\n' + gameCards.map(({ part, ...card }) => '  ' + JSON.stringify(card)).join(',\n')
+  + '\n];\nwords.push(...gameVocabulary);\n';
 const ids = new Set(existing.map(card => card.id));
 for (const card of additions) {
   const id = card.level + '-extra-' + card.word.toLowerCase().replace(/[^a-z]+/g, '-');
+  if (ids.has(id)) throw new Error('Duplicate card: ' + id);
+  ids.add(id);
+}
+for (const {id} of gameCards) {
   if (ids.has(id)) throw new Error('Duplicate card: ' + id);
   ids.add(id);
 }
