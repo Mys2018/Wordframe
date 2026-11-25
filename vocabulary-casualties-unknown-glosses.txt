@@ -888,3 +888,77 @@ capsule|2|space|космическая
 last stand|1|run|забег · run setting — настройка забега
 lifepod|1|run|забег · run settings — настройки забега
 lifepod|1|control|регулируют
+
+# Словоформы из дополнительных примеров
+being|быть
+board|доска
+bottle|бутылка
+builders|строители
+came|пошла, появилась
+campfire|костёр
+camping|поход с ночёвкой
+carried|перевёз, доставил
+cereal|хлопья
+chair|стул
+completely|полностью
+concussion|сотрясение мозга
+cooked|готовили
+didn't|отрицание в прошедшем времени
+digging|копание
+drying|сушка, вытирание
+early|рано
+elevator|лифт
+fingers|пальцы
+free|свободный
+fruit|фрукты
+grabbed|взял
+guessing|угадывание
+hammer|молоток
+hands|руки
+hay|сено
+heals|заживает
+hold|вмещать, хранить
+jacket|куртка
+leather|кожаный
+lit|горящий, зажжённый
+little|немного, маленький
+mondays|понедельники
+morning|утро
+move|перемещать
+objects|объекты
+orbit|орбита
+outside|на улице
+patches|участки
+pause|пауза
+pipe|труба
+plugged|подключили
+puzzle|головоломка
+scooter|самокат
+shock|шок
+shoes|обувь, ботинки
+shore|берег
+spray|распыление
+steps|ступени
+taxi|такси
+thought|подумал
+top|верх
+torch|факел
+towel|полотенце
+traps|ловушки
+trip|поездка, поход
+tutorial|обучение
+useful|полезный
+wear|носить, надевать
+wound|рана
+headlamp|2|put|put on — надевать
+headlamp|2|on|put on — надевать
+clay|2|out|out of — из
+clay|2|of|out of — из
+recharging station|2|plugged|plugged in — подключили к электросети
+recharging station|2|in|plugged in — подключили к электросети
+worn|1|drying|drying off — обсыхание, вытирание
+worn|1|off|drying off — обсыхание, вытирание
+nozzle|1|spray|spray bottle — бутылка с распылителем
+nozzle|1|top|on top — сверху
+nozzle|2|came|came out of — вышла из, пошла из
+nozzle|2|out|came out of — вышла из, пошла из

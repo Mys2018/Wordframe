@@ -119,7 +119,7 @@ for (const card of additions) {
 
 }
 const gameCollection = 'Casualties Unknown';
-const gameCards = fs.readFileSync('vocabulary-casualties-unknown.txt', 'utf8').trim().split(/\r?\n/)
+const readGameCards = file => fs.readFileSync(file, 'utf8').trim().split(/\r?\n/)
   .filter(line => line && !line.startsWith('#')).map(line => {
     const fields = line.split('|');
     const [part, word, right, game, gameTranslation, simple, simpleTranslation, level] = fields;
@@ -138,6 +138,9 @@ const gameCards = fs.readFileSync('vocabulary-casualties-unknown.txt', 'utf8').t
     return { id, level, collection: gameCollection, word, right, contexts, ...partMetadata(part) };
   });
 
+const originalGameCards = readGameCards('vocabulary-casualties-unknown.txt');
+const survivalCards = readGameCards('vocabulary-casualties-unknown-survival.txt');
+const gameCards = [...originalGameCards, ...survivalCards];
 const gameGlosses = new Map(gameCards.filter(card => /^[a-z]+$/.test(card.word)).map(card => [card.word, card.right]));
 const glossOverrides = new Map();
 const appliedOverrides = new Set();
@@ -161,7 +164,8 @@ for (const line of glossaryLines) {
 }
 
 for (const card of gameCards) {
-  const alternatives = gameCards.filter(candidate => candidate.part === card.part && candidate.right !== card.right);
+  // Keep the same distractors for cards that are already in saved sessions.
+  const alternatives = originalGameCards.filter(candidate => candidate.part === card.part && candidate.right !== card.right);
   const start = [...card.id].reduce((total, char) => (total * 31 + char.charCodeAt(0)) >>> 0, 7);
   const options = new Set([card.right]);
   for (let i = 0; options.size < 4 && i < alternatives.length; i++) {
