@@ -5,7 +5,7 @@ v|We can [wait=подождать] here=здесь until the bus=автобус 
 v|I want=хочу to [learn=выучить] ten=десять new=новых words=слов today=сегодня.|Я хочу выучить сегодня десять новых слов.
 v|I need=нужно to [check=проверить] the address=адрес before we leave=уйдём.|Мне нужно проверить адрес перед выходом.
 v|Can you [bring=принести] a glass=стакан of water=воды?|Можешь принести стакан воды?
-v|Please [turn on=включить] the light=свет so I can see=видеть.|Пожалуйста, нужно включить свет, чтобы мне было видно.
+p|Please [turn on=включить] the light=свет so I can see=видеть.|Пожалуйста, нужно включить свет, чтобы мне было видно.
 v|We need=нужно to [clean=убрать] the kitchen=кухню after cooking=готовки.|После готовки нужно убрать кухню.
 v|You can [choose=выбрать] the blue=синюю shirt=рубашку or the green=зелёную one=рубашку.|Можешь выбрать синюю или зелёную рубашку.
 v|We should [leave=уйти] now=сейчас to get=попасть home=домой before dark=темноты.|Надо уйти сейчас, чтобы попасть домой до темноты.
@@ -18,7 +18,7 @@ v|You can [rent=взять напрокат] a bike=велосипед for two=�
 v|I need=нужно to [fill=наполнить] this bottle=бутылку with water=водой.|Мне нужно наполнить эту бутылку водой.
 v|We must [cross=перейти] the road=дорогу at the green=зелёном light=свете.|Нам нужно перейти дорогу на зелёный свет.
 v|You can [follow=следовать за] me if you get=становишься lost=потерявшимся.|Если потеряешься, можешь идти за мной.
-v|I want=хочу to [try on=примерить] these jeans=джинсы before I buy=куплю them.|Я хочу примерить эти джинсы перед покупкой.
+p|I want=хочу to [try on=примерить] these jeans=джинсы before I buy=куплю them.|Я хочу примерить эти джинсы перед покупкой.
 v|I need=нужно to [fix=починить] my bike=велосипед because the brakes=тормоза do not work=работают.|Мне нужно починить велосипед, потому что тормоза не работают.
 v|We can [stay=остаться] here=здесь for one=одну more=ещё night=ночь.|Мы можем остаться здесь ещё на одну ночь.
 v|Could you [lend=одолжить мне] me your pen=ручку until the end=конца of class=урока?|Можешь одолжить мне свою ручку до конца урока?

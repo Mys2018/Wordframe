@@ -1,0 +1,890 @@
+# Английские словоформы | перевод для подсказки
+abandoned|заброшенный
+abnormal|аномальный
+added|добавило
+address|адрес
+addressed|адресовано
+adjust|настраивать
+adjustment|настройка
+advanced|продвинутый / более тяжёлый
+affect|влиять
+affects|влияет
+afternoon|послеобеденное время
+aid|помощь
+air|воздух
+alert|сигнал тревоги
+allow|позволяют
+allows|позволяет
+along|вдоль
+alongside|вместе с / наряду с
+also|также
+among|среди
+announces|сообщает
+appear|появляться
+appears|появляется
+apple|яблоко
+apples|яблоки
+area|область / зона
+areas|области / зоны
+arm|рука
+arrive|прибывать
+arrived|прибыл
+asleep|спящий · fall asleep — заснуть
+assigned|назначенный
+assistant|помощник
+associated|связанный
+astronaut|астронавт
+automatic|автоматический
+available|доступный
+back|назад / обратно
+backpack|рюкзак
+bag|сумка
+bags|сумки
+ball|мяч / шар
+bandage|бинт / повязка
+bandages|бинты / повязки
+bar|клавиша · space bar — пробел
+barely|едва
+beach|пляж / берег
+bead|бусина
+became|стал / стала
+become|становиться
+becomes|становится
+bed|кровать
+been|форма глагола be · здесь часть пассивной конструкции
+began|начал / начала
+bench|скамейка
+beneath|под
+bent|согнутый / погнувшийся
+berries|ягоды
+bike|велосипед
+bird|птица / птичий
+bites|укусы
+black|чёрный
+bleeding|кровотечение
+blocked|перегородил / закрыл
+blocks|перекрывает
+blood|кровь
+boat's|лодки · притяжательная форма от boat
+body|тело
+bone|кость
+books|книги
+both|оба / и то и другое
+bottles|бутылки
+bottom|дно
+bowls|миски / тарелки
+box|коробка / ящик
+boxes|коробки
+brain|мозг
+branch|ветка
+branches|ветки
+brand|марка
+break|ломать / разбивать
+breath|дыхание · out of breath — запыхавшийся
+breathe|дышать
+breathing|дыхание
+bridge|мост
+broke|сломали / разбили
+broken|сломанный
+building|здание
+buildings|здания
+built|построил / построенный
+bus|автобус
+bushes|кусты
+butcher|мясник
+butterfly|бабочка
+button|кнопка
+cable|кабель
+caffeine|кофеин
+called|названный / позвонил
+calls|называет
+cargo|груз
+carry|нести / носить
+carrying|переноска / неся
+category|категория
+cause|вызывать
+caused|вызвал
+cave|пещера / пещерный
+caves|пещеры
+change|изменить
+changed|изменил / сменил
+character|персонаж
+character's|персонажа · притяжательная форма от character
+charger|зарядное устройство
+chart|медицинская карта
+check|проверить
+chest|грудная клетка
+children|дети
+chip|чип / микросхема
+choose|выбирать
+chunks|куски
+church|церковь
+class|занятие / класс
+clean|чистый
+cleared|расчистили / убрали
+click|щёлкнуть / нажать
+climbed|залез
+climber|альпинист
+climbing|лазание / подъём
+clinic|клиника
+clothes|одежда
+clothing|одежда
+clouds|облака / тучи
+coffee|кофе
+coins|монеты
+cold|холод
+collect|собирать
+collected|скопился / скопилось
+comes|бывает / поставляется
+coming|исходящий / приближающийся
+command|команда
+concern|повод для беспокойства
+concrete|бетон
+condition|состояние
+conditions|состояния / нарушения
+configurable|настраиваемый
+consciousness|сознание
+container|ёмкость / контейнер
+containers|ёмкости / контейнеры
+contains|содержит
+control|управлять / управление
+controls|настройки / элементы управления
+copy|копировать
+cord|шнур · spinal cord — спинной мозг
+core|ядро
+couldn't|не мог / не смог
+course|курс
+covered|покрытый
+crab|краб
+crack|трещина
+cracked|растрескалась / потрескалась
+crafting|изготовление предметов
+cream|крем
+creatures|существа
+crew|экипаж
+crosses|пересекает
+crystal|кристалл
+crystalline|кристаллический
+curled|обвил / свернул
+cut|резать / разрубил / обрезанный
+damage|повреждение
+damaged|повреждённый
+dangerous|опасный
+dark|тёмный
+day|день
+days|дни
+decided|решил
+deep|глубокий
+deeper|более глубокий
+deer|олень
+defenders|защитники
+describe|описывать
+described|описан
+describes|описывает
+description|описание
+descriptions|описания
+designed|предназначен
+desk|письменный стол
+detected|обнаружил / зарегистрировал
+device|устройство
+diagram|схема
+differ|отличаться
+difficult|трудный
+dirty|грязный
+disc|диск
+discussed|обсудили
+disorders|расстройства / нарушения
+display|экран / индикатор
+displayed|выставил / показал
+displays|показывает
+distance|расстояние
+distinct|отдельный / особый
+distinguish|различать
+distinguishes|различает
+diver|дайвер
+doctor|врач
+dog|собака
+don't|не · сокращение от do not
+door|дверь
+doors|двери
+dressings|раневые повязки
+drink|пить
+drinking|питьевой · drinking water — питьевая вода
+dripped|капал
+driveway|подъездная дорожка
+drop|сброс · drop capsule — десантная капсула
+drugs|лекарства / вещества
+dry|сушить / сушиться
+dug|выкопал
+dummy|манекен
+ears|уши
+earth|Земля
+effect|эффект / действие
+emphasize|подчёркивать
+empty|пустой
+encounter|встретить / столкнуться с
+encountered|встречающийся / встречались
+end|конец / край
+energy|энергия
+engineers|инженеры
+entered|проникла / вошла
+entrance|вход
+entries|записи / пункты
+entry|запись / строка
+environment|окружение
+environments|зоны / типы местности
+equipment|оборудование / снаряжение
+escape|побег
+examine|осматривать
+examined|осмотрел / рассматривали
+explained|объяснил
+explorer|исследователь
+explorers|исследователи
+exposed|обнажённый / открытый
+extra|дополнительный
+extreme|крайний / экстремальный
+facial|лицевой / связанный с лицом
+factory|завод
+faint|слабый / едва заметный
+fall|падать
+falling|падающий
+fast|быстро
+features|особенности / объекты
+feels|чувствует себя
+fell|упал
+felt|почувствовал / чувствовал
+few|несколько · a few — несколько
+field|поле
+filled|наполнил
+film|фильм
+find|находить
+finding|находка / обнаружение
+finger|палец руки
+first|первый
+flood|наводнение
+flooded|затопленный
+flooding|затопление
+floor|пол / дно
+foot|стопа
+force|заставлять
+formations|образования
+found|нашёл / нашли / встречающийся
+frame|рама
+frozen|замёрзший / ледяной
+full|полный
+fully|полностью
+game|игра
+game's|игры · притяжательная форма от game
+garage|гараж
+garden|сад
+gardener|садовник
+gate|выход на посадку
+gave|дал / вызвал
+gear|снаряжение
+gently|аккуратно / слегка
+geology|геология
+give|давать
+gives|даёт
+glass|стекло
+going|движение · keep going — продолжать путь
+got|получил / получила
+grandfather|дедушка
+granite|гранит
+grass|трава
+ground|земля
+guide|гид / экскурсовод
+hand|рука / кисть
+handed|вручил · handed in — сдал
+happier|более радостный
+hard|твёрдый / трудный
+head|голова
+heads|головы
+healing|заживает
+health|здоровье
+hearing|слух
+heart|сердце
+heartbeat|сердцебиение
+heat|жара / тепло
+heavy|тяжёлый
+helmet|шлем
+help|помощь / помогать
+helped|помогла / помогло
+helps|помогает
+hid|спрятался / скрывала
+high|высокий
+higher|более высокий
+hike|поход
+hiker's|туриста · притяжательная форма от hiker
+hikers|туристы
+history|анамнез · сведения о прошлых заболеваниях
+hitting|ударившись / удар
+hole|дыра / ямка
+holes|отверстия / пробоины
+honey|мёд
+horse|лошадь
+hospital|больница
+hot|горячий
+hours|часы
+house|дом
+hung|висел / свисал
+hunger|голод
+i'll|я буду · сокращение от I will
+i'm|я есть / я · сокращение от I am
+icy|ледяной / покрытый льдом
+improved|улучшило
+improvised|импровизированный / из подручных средств
+include|включать / содержать
+includes|включает
+increase|повышать / увеличивать
+indicate|указывать / показывать
+indicator|индикатор
+indoors|в помещении
+infection|инфекция
+ingredient|компонент / ингредиент
+injured|травмированный
+injuries|травмы / раны
+injury|травма
+instructor|инструктор
+intelligence|интеллект
+interface|интерфейс
+interview|собеседование
+inventory|инвентарь
+investigator|следователь
+iron|железо / железный
+isn't|не является · сокращение от is not
+item|предмет
+items|предметы
+jar|банка
+journey|путешествие / путь
+jump|прыжок
+just|просто / лишь
+k|K · название витамина
+keep|держать / продолжать
+keeps|держит / хранит
+kept|хранил / сохранял
+key|клавиша
+kind|вид / тип
+kinds|виды
+kit|набор · med-kit — аптечка
+kitchen|кухня
+knee|колено
+knew|знали
+knife|нож
+lab|лаборатория
+label|ярлык / отметка
+labeled|помеченный / подписанный
+labels|отметки / обозначения
+laboratory|лаборатория
+large|большой
+late|поздно / с опозданием
+layer|слой / уровень
+layers|слои / уровни
+leaf|лист
+learned|научился / научилась
+leave|уходить / уезжать
+leaves|оставляет
+leaving|уход / отъезд
+left|левый / оставил
+leg|нога
+let|позволять / дай
+let's|давай / давайте
+lets|позволяет
+letter|письмо
+levels|уровни / степени
+lies|находится
+light|свет / лёгкий / светлый
+lights|свет / лампы
+limbs|конечности
+limit|ограничение / лимит
+links|связывает
+liquid|жидкость / жидкий
+liquids|жидкости
+list|список
+listed|указанный / перечисленный
+lists|перечисляет
+live|жить
+load|груз / нагрузка
+lockpicking|вскрытие замков отмычкой
+locks|замки
+locksmith|специалист по замкам
+long|долгий / длинный
+look|смотреть / взгляд
+looked|выглядели / выглядел
+loose|рыхлый
+losing|проигрыш / проиграв
+loss|потеря
+low|низкий
+lrd|LRD · прибор для локальной реанимации
+made|сделал / сделанный
+magazine|магазин для патронов
+make|делать / заставлять
+managed|удалось
+manual|ручной
+many|много / многие
+map|карта
+marble|мрамор
+mark|отметить / обозначить
+marked|обозначенный
+market|рынок
+markings|отметки / деления
+mat|коврик / подставка
+match|матч
+material|материал
+materials|материалы
+meal|приём пищи / еда
+means|означает
+measure|измерять
+meat|мясо
+med|медицинский · med-kit — аптечка
+medical|медицинский
+medicine|лекарство
+meeting|совещание / собрание
+mentions|упоминает
+menu|меню
+metal|металл / металлический
+mice|мыши
+microphone|микрофон
+mild|лёгкий / слабый
+mine|шахта / рудник
+minor|незначительный / лёгкий
+missing|пропавший / отсутствующий
+mode|режим
+modifier|модификатор
+monitor|монитор
+monitored|наблюдали / контролировали
+mood|настроение
+mountains|горы
+moved|двигался
+movement|движение
+moving|двигаясь / движение
+much|много / насколько
+multiplier|коэффициент / множитель
+museum|музей
+mush|кашица / мягкая масса
+nails|гвозди
+naloxone|налоксон
+name|имя / название
+named|названный / упомянутый
+narrow|узкий
+neck|шея
+neighbors|соседи / соседние области
+new|новый
+next|следующий · next to — рядом с
+night|ночь
+noise|шум
+note|записка / заметка
+notes|записки / заметки
+notice|заметить
+noticed|заметила / заметил
+number|число / количество
+nurse|медсестра
+nut|гайка
+object|объект / предмет
+obstacles|препятствия
+octopus|осьминог
+off|прочь / с · значение зависит от глагола
+offer|предлагать
+offers|предлагает
+offices|кабинеты / офисы
+often|часто
+old|старый
+once|когда-то / как только
+open|открывать
+opened|открыл / открыла
+opioid|опиоид / опиоидный
+option|вариант / команда
+ordinary|обычный
+organs|органы
+other|другой
+out|наружу / из · значение зависит от глагола
+overnight|за ночь / всю ночь
+own|собственный
+pack|упаковка / комплект
+package|посылка / упаковка
+packed|упаковал / собрал
+pain|боль
+panel|панель
+parked|припаркованный
+part|часть
+pass|передать / подать
+passages|проходы
+path|тропа / дорожка
+patient|пациент
+patients|пациенты
+pda|КПК · карманный компьютер
+person|человек
+phone|телефон
+photo|фотография
+physical|физический
+picked|поднял · picked up — поднял
+piece|кусок
+pipes|трубы
+place|место
+planned|запланировали
+plant|растение / завод
+planted|посадили
+plants|растения
+plastic|пластик
+player|игрок / персонаж игрока
+plays|играет · plays a role — играет роль
+pleasant|приятный
+plumber|сантехник
+pocket|карман
+pointed|указал
+pot|кастрюля
+powder|порошок
+power|энергия · power plant — электростанция
+practiced|отрабатывали / практиковали
+prepared|подготовила
+presets|готовые варианты настроек
+press|нажми / нажать
+pressed|надавил
+pressure|давление
+pretty|симпатичный / красивый
+price|цена
+printer|принтер
+problem|проблема
+problems|проблемы
+produces|производит / добывает
+progress|развиться / перейти
+prompt|подсказка
+property|свойство
+protection|защита
+provides|обеспечивает
+pulled|потянул / подтянул
+race|забег
+rain|дождь
+raise|повысить
+rare|редкий
+rate|скорость / темп
+ray|луч · X-ray — рентген
+reading|показание прибора / показатель
+recording|запись
+recover|восстановиться / оправиться
+recovery|восстановление
+red|красный
+reduces|снижает
+refers|ссылается / отсылает
+region|область / зона
+regions|области / зоны
+regular|обычный
+regularly|регулярно
+related|связанный
+relative|родственник
+relief|облегчение
+remain|оставаться
+remained|остался / оставался
+remains|останки / остатки
+remember|помнить / не забыть
+remove|снимать / удалять
+removing|снятие / удаление
+replaced|заменил / заменили
+replacement|замена
+report|отчёт / сообщать
+researchers|исследователи
+resistant|устойчивый
+resolution|разрешение изображения
+resources|ресурсы
+rest|отдых
+rested|положила / опёрлась
+resume|возобновить / продолжить
+returned|вернулся
+reveal|выявлять
+rhythm|ритм
+right|правый
+rise|подниматься
+rises|поднимается
+risk|риск
+river|река
+road|дорога
+rock|камень / горная порода
+role|роль
+rolling|катящийся
+roof|крыша
+room|комната / помещение
+rooms|комнаты / кабинеты
+rope|верёвка
+run|забег / бежать
+runner|бегун
+samples|образцы
+sandals|сандалии
+saved|сохранил
+saw|увидели
+says|говорит / сообщает
+scale|шкала
+scan|снимок / обследование
+scenario|сценарий
+school|школа
+screen|экран
+screens|экраны
+securely|надёжно / безопасно
+seeing|увидев
+seemed|казалось
+seems|кажется
+select|выбрать
+selected|выбранный
+selection|выбор
+seminar|семинар
+sent|отправил / выбросил
+separate|отдельный
+separately|отдельно
+september|сентябрь
+serum|сыворотка
+serve|служить
+set|установить / настроить
+setting|настройка
+settings|настройки
+severe|тяжёлый / сильный
+severely|тяжело / сильно
+severity|степень тяжести
+sharp|острый / резкий
+shed|сарай
+shelf|полка
+shelter|укрытие / приют
+short|короткий
+shoulder|плечо
+shoulders|плечи
+shovel|лопата
+show|показывать · show up — появляться
+showed|показал
+shown|показанный
+shows|показывает
+sick|больной / испытывающий недомогание
+sign|вывеска
+signs|признаки
+simple|простой
+simulated|имитировали
+sink|раковина
+sitting|сидя / сидение
+situation|ситуация / положение
+skier|лыжник
+sky|небо
+sleep|сон
+slow|замедлять
+slowing|замедляя / замедление
+small|маленький
+smell|запах
+smile|улыбка
+snake|змея
+snake's|змеи · притяжательная форма от snake
+snow|снег
+soft|мягкий
+soil|почва / земля
+sold|продали / сдали за деньги
+something|что-то
+soon|скоро · as soon as — как только
+sound|звук
+soup|суп
+space|космос / место · space bar — пробел
+species|вид / биологический вид
+speech|речь
+spikes|шипы
+spinal|спинномозговой · spinal cord — спинной мозг
+spoon|ложка
+stage|стадия
+stairs|лестница
+start|начало / запуск
+state|состояние
+states|состояния
+station|станция / вокзал
+statue|статуя
+status|состояние / статус
+stay|оставаться
+stayed|остался / оставались
+stays|остаётся
+steam|пар
+steel|сталь / стальной
+sticky|липкий
+stiff|окоченевший / жёсткий
+stood|стоял
+stopped|остановили
+stopping|прекращение
+stores|хранит
+storm|буря
+stove|плита
+street|улица
+strength|сила
+stress|стресс / напряжение
+stretch|участок / отрезок
+strider's|страйдера · притяжательная форма от strider
+strong|сильный
+structures|сооружения / конструкции
+studied|изучали
+sudden|внезапный
+suddenly|внезапно / резко
+suffer|перенести / получить травму
+suffered|перенёс / получил травму
+summit|вершина
+sun|солнце
+sunset|закат
+supplies|запасы / припасы
+surface|поверхность
+surgeon|хирург
+surgery|хирургия
+surrounds|окружает
+swimming|плавание
+symptoms|симптомы
+syringes|шприцы
+system|система
+table|стол
+takes|принимает / берёт
+tank|резервуар / бак
+teacher|учитель
+team|команда
+tech|технологический · Tech-Ball — техношар
+technician|техник
+tells|говорит / подсказывает
+temperature|температура
+terrain|местность
+test|проверка / тест
+tested|проверяли
+text|текст
+thick|густой / толстый
+thirst|жажда
+threshold|порог
+ticket|билет
+tighten|затянуть
+tiles|плитки / черепица
+time|время
+tiny|крошечный
+titanium|титан / титановый
+toe|палец ноги
+took|взял / занял
+tool|инструмент
+tools|инструменты
+torn|порванный
+tough|прочный / крепкий
+toy|игрушка
+tracks|отслеживает
+trader|торговец
+trader's|торговца · притяжательная форма от trader
+traders|торговцы
+training|обучение / тренировка
+transmitter|передатчик
+travel|поездка / путешествие
+treated|лечил / обработанный
+treatment|лечение
+tree|дерево
+trees|деревья
+tries|пытается
+truck|грузовик
+try|попытаться / попробовать
+turn|повернуть
+turned|повернул / стал
+type|тип / вид
+types|типы / виды
+underground|подземный / под землёй
+unlimited|неограниченный
+up|вверх · значение зависит от глагола
+used|использовал / использованный
+uses|использует
+variants|варианты
+ventricular|желудочковый
+video|видео
+village|деревня
+virus|вирус
+visible|видимый
+visitors|посетители
+vitamin|витамин
+walk|прогулка / идти пешком
+walked|шли / ходили пешком
+wall|стена
+want|хотеть
+warm|тёплый
+warmer|теплее
+warmth|тепло
+warn|предупреждать
+warned|предупредил
+warning|предупреждение
+warns|предупреждает
+watch|следить / смотреть
+watched|смотрели / наблюдали
+water|вода
+waves|волны
+wearable|пригодный для ношения
+wears|носит
+weather|погода
+weeds|сорняки
+week|неделя
+weeks|недели
+weight|вес
+well|хорошо
+went|пошёл
+wet|мокрый
+wind|ветер
+window|окно
+winter|зима
+wipe|салфетка
+wiped|вытер / протёр
+wolf|волк / волчий
+wood|древесина
+wooden|деревянный
+words|слова
+wore|носил / надел
+work|работа / работать
+worked|работали
+workers|рабочие
+world|мир
+wrist|запястье
+writer|автор
+x|X · X-ray — рентген
+year|год
+
+# Контекстные уточнения: карточка | номер примера | словоформа | перевод
+gauze|2|first|первая · first aid — первая помощь
+gauze|2|aid|помощь · first aid — первая помощь
+rag|1|dry|вытираться / высыхать · dry off — обсохнуть
+rag|1|off|частица в dry off — вытереться / обсохнуть
+tweezers|1|look|искать · look for — искать
+tweezers|1|for|предлог в look for — искать
+tweezers|2|up|частица в picked up — поднял
+tourniquet|2|first|первая · first aid — первая помощь
+tourniquet|2|aid|помощь · first aid — первая помощь
+shrapnel|2|left|оставленные
+limb|2|healing|заживала
+forearm|1|left|левое
+hypotension|2|of|часть оборота a history of — сведения о заболевании в анамнезе
+resuscitation|1|uses|использует
+arrhythmia|1|report|сообщить
+hypotension|1|report|сообщать
+radiation sickness|2|report|отчёт
+immunocompromised|2|called|позвонила
+unconscious|2|help|помощь
+incapacitated|2|left|оставила / привела к состоянию
+encumbered|2|run|бежать
+alloy|2|light|лёгкий по весу
+insulation|1|run|забег · run settings — настройки забега
+exertion|2|out|часть оборота out of breath — запыхавшийся
+exertion|2|of|часть оборота out of breath — запыхавшийся
+loot density|1|run|забег · run settings — настройки забега
+keybind|1|control|управление
+keybind|2|space|часть названия space bar — клавиша пробела
+toggle|2|light|светлый · light mode — светлый режим
+spent fuel|2|plant|завод · power plant — электростанция
+spent fuel|2|power|энергия · power plant — электростанция
+desolate|1|run|забег
+pitch black|1|light|освещение
+pitch black|2|out|частица в went out — погасли
+crimson|2|turned|стало
+kinetic|1|called|названный
+kinetic|2|ball|мяч
+bioluminescent|1|give|излучать · give off — испускать
+bioluminescent|1|off|частица в give off — излучать
+manifestation|1|called|названная
+retrieve|1|report|отчёт
+unresolved|1|report|отчёт
+deceased|1|mark|отметить / пометить
+catastrophic failure|1|report|отчёт
+malfunction|1|ball|шар · Tech-Ball — техношар
+ambient|2|picked|уловил · picked up — уловил
+ambient|2|up|частица в picked up — уловил
+hemothorax|2|hard|трудно
+pulmonary embolism|2|covered|разбирал / был посвящён
+eject|1|magazine|магазин с патронами
+resilience|2|helped|помогла
+leniency|2|handed|сдал · handed in — сдал
+leniency|2|in|частица в handed in — сдал
+capsule|2|space|космическая
+last stand|1|run|забег · run setting — настройка забега
+lifepod|1|run|забег · run settings — настройки забега
+lifepod|1|control|регулируют

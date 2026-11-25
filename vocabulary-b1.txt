@@ -9,11 +9,11 @@ v|We must [protect=защитить] the plants=растения from the frost=
 v|Could you [recommend=порекомендовать] a restaurant=ресторан near the station=вокзала?|Можешь порекомендовать ресторан рядом с вокзалом?
 v|We [agreed=согласились] to split=разделить the bill=счёт equally=поровну.|Мы согласились разделить счёт поровну.
 v|I hope=надеюсь we can [keep in touch=оставаться на связи] after you move=переедешь abroad=за границу.|Надеюсь, мы сможем оставаться на связи после твоего переезда за границу.
-v|We will [pick up=заберём] the parcel=посылку from the post=почтового office=отделения tomorrow=завтра.|Завтра заберём посылку с почты.
-v|I stopped=остановился to [check in=зарегистрироваться] at the hotel=отеле before dinner=ужином.|Я заехал зарегистрироваться в отеле перед ужином.
-v|Can you [hand in=сдать] your report=отчёт before the class=занятия ends=закончится?|Можешь сдать отчёт до конца занятия?
-v|I [gave up=бросил] smoking=курить last=в прошлом year=году.|Я бросил курить в прошлом году.
-v|Can you [figure out=разобраться] why the printer=принтер stops=останавливается halfway=на полпути through each page=страницу?|Можешь разобраться, почему принтер останавливается на середине каждой страницы?
+p|We will [pick up=заберём] the parcel=посылку from the post=почтового office=отделения tomorrow=завтра.|Завтра заберём посылку с почты.
+p|I stopped=остановился to [check in=зарегистрироваться] at the hotel=отеле before dinner=ужином.|Я заехал зарегистрироваться в отеле перед ужином.
+p|Can you [hand in=сдать] your report=отчёт before the class=занятия ends=закончится?|Можешь сдать отчёт до конца занятия?
+p|I [gave up=бросил] smoking=курить last=в прошлом year=году.|Я бросил курить в прошлом году.
+p|Can you [figure out=разобраться] why the printer=принтер stops=останавливается halfway=на полпути through each page=страницу?|Можешь разобраться, почему принтер останавливается на середине каждой страницы?
 v|We want=хотим to [improve=улучшить] the service=сервис after hearing=услышав your feedback=отзывы.|Мы хотим улучшить сервис, выслушав ваши отзывы.
 v|Feel=чувствуй free=себя свободно to [complain=пожаловаться] if the room=номер is noisy=шумный.|Если в номере шумно, можешь пожаловаться.
 v|I [apologised=извинился] for arriving=приход late=поздно.|Я извинился за опоздание.
@@ -25,8 +25,8 @@ v|Can you [explain=объяснить] why the final=итоговый price=це
 v|I [noticed=заметил] a crack=трещину in the glass=стекле when the sun=солнце came=вышло out=наружу.|Я заметил трещину на стекле, когда выглянуло солнце.
 v|You should [apply=подать заявку] for the job=работу before the closing=крайней date=даты.|Тебе стоит подать заявку на работу до крайнего срока.
 v|The children=дети [gathered=собрались] around the teacher=учителя to hear=услышать the story=историю.|Дети собрались вокруг учителя, чтобы услышать историю.
-v|We [set off=отправились] before dawn=рассветом to avoid=избежать traffic=пробок.|Мы отправились до рассвета, чтобы избежать пробок.
-v|Could you [point out=указать] the exact=точное place=место on the map=карте?|Можешь указать точное место на карте?
+p|We [set off=отправились] before dawn=рассветом to avoid=избежать traffic=пробок.|Мы отправились до рассвета, чтобы избежать пробок.
+p|Could you [point out=указать] the exact=точное place=место on the map=карте?|Можешь указать точное место на карте?
 v|The train=поезд [arrives=прибывает] at platform=платформу four=четыре in ten=десять minutes=минут.|Поезд прибудет на четвёртую платформу через десять минут.
 v|We [discovered=обнаружили] an old=старую photo=фотографию behind the mirror=зеркалом.|Мы обнаружили старую фотографию за зеркалом.
 v|I [managed=сумел] to finish=закончить the test=тест before time=время ran=закончилось out=часть фразового глагола.|Я сумел закончить тест, пока время не вышло.
