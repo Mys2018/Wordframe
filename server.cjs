@@ -53,17 +53,25 @@ function generationSpec(kind, id) {
   if (!topic) return;
   const input = { topic: topic.title, level: topic.level, rule: topic.rule };
   if (kind === 'examples') return {
-    instruction: 'Return JSON with examples: an array of exactly two pairs [new English example, Russian translation]. Apply the grammar rule distinctly in both.',
+    instruction: 'Return JSON with examples: an array of exactly two items [new English example, Russian translation, glosses], '
+      + 'where glosses is an array of Russian glosses for every English word in the example in order, including articles '
+      + '(split hyphenated words; count contractions as one word). Apply the grammar rule distinctly in both.',
     input: { ...input, originals: topic.examples },
     validate(result) {
       if (Array.isArray(result?.examples) && result.examples.length === 2 && result.examples.every(pair =>
-        Array.isArray(pair) && pair.length === 2 && safeText(pair[0], 280) && !/\p{Script=Cyrillic}/u.test(pair[0])
-        && translated(pair[1], 350))) return { examples: result.examples };
+        Array.isArray(pair) && pair.length === 3 && safeText(pair[0], 280) && !/\p{Script=Cyrillic}/u.test(pair[0])
+        && translated(pair[1], 350)
+        && Array.isArray(pair[2]) && pair[2].length === (pair[0].match(letters) ?? []).length
+        && pair[2].every(gloss => translated(gloss, 110)))) return { examples: result.examples };
     }
   };
   if (kind === 'gap') return {
     instruction: 'Return JSON with sentence (English with exactly one literal ___ gap), cue (base word or phrase), '
-      + 'answers (array of one to three distinct correct forms, preferred first), explanation (Russian, one or two sentences). '
+      + 'answers (array of one to three distinct correct forms, preferred first), '
+      + 'answerGloss (Russian translation of the preferred missing form in context), '
+      + 'translation (natural Russian translation of the complete sentence), '
+      + 'glosses (array of Russian glosses for every English word outside ___ in order, including articles; '
+      + 'split hyphenated words; count contractions as one word), and explanation (Russian, one or two sentences). '
       + 'Provide enough context and do not reveal the answer elsewhere in the sentence.',
     input: { ...input, originals: topic.exercises.map(exercise => exercise.sentence) },
     validate(result) {
@@ -72,8 +80,17 @@ function generationSpec(kind, id) {
         || !Array.isArray(result.answers) || result.answers.length < 1 || result.answers.length > 3
         || !result.answers.every(answer => safeText(answer, 90) && /[a-z0-9]/i.test(answer)
           && !/\p{Script=Cyrillic}/u.test(answer))
+        || !translated(result.answerGloss, 110)
+        || !translated(result.translation, 380)
+        || !Array.isArray(result.glosses)
+        || result.glosses.length !== (result.sentence.replace('___', ' ').match(letters) ?? []).length
+        || !result.glosses.every(gloss => translated(gloss, 110))
         || !translated(result.explanation, 420)) return;
-      return { sentence: result.sentence, cue: result.cue, answers: result.answers, explanation: result.explanation };
+      return {
+        sentence: result.sentence, cue: result.cue, answers: result.answers,
+        answerGloss: result.answerGloss, translation: result.translation,
+        glosses: result.glosses, explanation: result.explanation
+      };
     }
   };
 }

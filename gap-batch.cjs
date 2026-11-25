@@ -12,7 +12,10 @@ function gapBatchSpec(body, topics, generationSpec) {
       + 'Use only the supplied topic IDs and apply each topic rule accurately. Vary situations, vocabulary, and sentence structures. '
       + 'Do not copy examples from excludedSentences. Return raw JSON {"cards":[{"topicId":"topic id",'
       + '"sentence":"English sentence with exactly one literal ___ gap","cue":"base word or phrase",'
-      + '"answers":["one to three acceptable forms, preferred first"],"explanation":"brief Russian explanation"}]}. '
+      + '"answers":["one to three acceptable forms, preferred first"],"answerGloss":"Russian translation of the preferred missing form in context",'
+      + '"translation":"natural Russian translation of the complete sentence",'
+      + '"glosses":["Russian gloss for every English word outside ___ in order, including articles; split hyphenated words; count contractions as one word"],'
+      + '"explanation":"brief Russian explanation"}]}. '
       + 'Include sufficient context for the answer, and do not reveal the answer elsewhere in the sentence.',
     input: {topics: choices.map(({id,title,level,rule}) => ({id,title,level,rule})), excludedSentences:body.history.slice(-50)},
     validate(data) {
