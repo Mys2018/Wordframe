@@ -402,3 +402,129 @@ const grammarTopics = [
     ]
   }
 ];
+
+// Learning aids are keyed by topic so the practice exercises keep stable IDs.
+const grammarVisuals = {
+  'present-simple': {
+    formula: ['подлежащее', 'глагол / глагол + s'],
+    example: ['works', "doesn't drink"],
+    timeline: { description:'Привычка повторяется в разные моменты, включая настоящее.', bars: [], dots:[17,36,55,74,93], reference:55 }
+  },
+  'present-continuous': {
+    formula: ['подлежащее', 'am / is / are', 'глагол + ing'],
+    example: ["'m making", "'re staying"],
+    timeline: { description:'Действие началось и продолжается в момент речи.', bars:[[32,70]], dots:[], reference:55 }
+  },
+  'present-perfect': {
+    formula: ['подлежащее', 'have / has', 'третья форма'],
+    example: ["'ve lost", 'Have you ever tried'],
+    timeline: { description:'Действие произошло раньше, а его результат важен сейчас.', bars:[[34,55]], dots:[34], reference:55 }
+  },
+  'present-perfect-continuous': {
+    formula: ['подлежащее', 'have / has been', 'глагол + ing'],
+    example: ["'ve been looking", 'Have you been gardening'],
+    timeline: { description:'Процесс начался раньше и продолжается до настоящего момента или только что закончился.', bars:[[19,55]], dots:[], reference:55 }
+  },
+  'past-simple': {
+    formula: ['подлежащее', 'вторая форма / глагол + ed'],
+    example: ['visited', 'Did you find'],
+    timeline: { description:'Завершённое действие произошло в прошлом.', bars:[], dots:[29], reference:55 }
+  },
+  'past-continuous': {
+    formula: ['подлежащее', 'was / were', 'глагол + ing'],
+    example: ['was reading', 'were still having'],
+    timeline: { description:'Действие было в процессе в определённый момент прошлого.', bars:[[14,43]], dots:[29], reference:55 }
+  },
+  'past-perfect': {
+    formula: ['подлежащее', 'had', 'третья форма'],
+    example: ['had already left', 'had gone'],
+    timeline: { description:'Одно событие завершилось до другого события в прошлом.', bars:[], dots:[15,36], reference:55 }
+  },
+  'past-perfect-continuous': {
+    formula: ['подлежащее', 'had been', 'глагол + ing'],
+    example: ['had been raining', "'d been waiting"],
+    timeline: { description:'Действие длилось до другого момента в прошлом.', bars:[[8,37]], dots:[37], reference:55 }
+  },
+  'future-simple': {
+    formula: ['подлежащее', 'will', 'начальная форма'],
+    example: ["'ll open", 'will be'],
+    timeline: { description:'Обещание, решение или прогноз относится к будущему.', bars:[], dots:[78], reference:55 }
+  },
+  'future-continuous': {
+    formula: ['подлежащее', 'will be', 'глагол + ing'],
+    example: ["'ll be flying", "'ll be driving"],
+    timeline: { description:'Действие будет в процессе в выбранный момент будущего.', bars:[[67,94]], dots:[80], reference:55 }
+  },
+  'future-perfect': {
+    formula: ['подлежащее', 'will have', 'третья форма'],
+    example: ["'ll have sent", 'will have closed'],
+    timeline: { description:'Результат будет достигнут к указанному моменту в будущем.', bars:[[68,84]], dots:[68,84], reference:55 }
+  },
+  'future-perfect-continuous': {
+    formula: ['подлежащее', 'will have been', 'глагол + ing'],
+    example: ["'ll have been working", 'will have been hiking'],
+    timeline: { description:'К выбранному моменту в будущем действие будет длиться определённое время.', bars:[[61,88]], dots:[88], reference:55 }
+  },
+  'zero-conditional': {
+    formula: ['if + Present Simple', 'Present Simple'],
+    example: ['If water freezes', 'If I work late'],
+    relationship: ['Условие', 'Закономерный результат'],
+    description:'Общий факт или повторяющаяся ситуация.'
+  },
+  'first-conditional': {
+    formula: ['if + Present Simple', 'will + начальная форма'],
+    example: ['If it rains tomorrow', "You'll miss"],
+    relationship: ['Реальное условие', 'Возможный результат'],
+    description:'Вероятная ситуация в будущем.'
+  },
+  'second-conditional': {
+    formula: ['if + Past Simple', 'would + начальная форма'],
+    example: ['If I had more time', "I'd take"],
+    relationship: ['Воображаемое условие', 'Воображаемый результат'],
+    description:'Представляем маловероятную или нереальную ситуацию сейчас или в будущем.'
+  },
+  'third-conditional': {
+    formula: ['if + had + третья форма', 'would have + третья форма'],
+    example: ['If we had left earlier', "would've stayed"],
+    relationship: ['Несбывшееся условие в прошлом', 'Воображаемый результат в прошлом'],
+    description:'Представляем, как прошлое могло сложиться иначе.'
+  },
+  'mixed-conditional': {
+    formula: ['if + had + третья форма', 'would + начальная форма'],
+    example: ["If I'd gone to bed earlier", "wouldn't have missed"],
+    relationship: ['Прошлое условие', 'Воображаемый результат сейчас'],
+    description:'Один из вариантов: прошлое условие влияет на результат в настоящем.'
+  },
+  'articles': {
+    formula: ['a / an', 'неопределённый предмет', 'the', 'конкретный предмет'],
+    example: ['a book', 'an hour']
+  },
+  'comparison': {
+    formula: ['прилагательное + er / more', 'than', 'the + прилагательное + est / most'],
+    example: ['lighter', 'the most interesting']
+  },
+  'passive-voice': {
+    formula: ['объект действия', 'be в нужном времени', 'третья форма'],
+    example: ['was built', 'are cleaned']
+  },
+  'reported-speech': {
+    formula: ['said / told', 'кто', 'сообщение'],
+    example: ['he was cold', 'she asked where I lived']
+  },
+  'modal-verbs': {
+    formula: ['подлежащее', 'can / should / must', 'начальная форма'],
+    example: ['can swim', 'should call']
+  },
+  'gerund-infinitive': {
+    formula: ['enjoy / avoid / finish', 'глагол + ing', 'decide / hope / want', 'to + начальная форма'],
+    example: ['enjoy cooking', 'decided to wait']
+  },
+  'quantifiers': {
+    formula: ['many / few', 'исчисляемые', 'much / little', 'неисчисляемые'],
+    example: ['much milk', 'A few people']
+  },
+  'relative-clauses': {
+    formula: ['who', 'человек', 'which', 'предмет', 'whose', 'принадлежность'],
+    example: ['who lives next door', 'which I bought online']
+  }
+};

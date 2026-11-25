@@ -169,7 +169,7 @@ const reverseChoices = (() => {
 
   const cache = new Map();
   let corpus;
-  return id => {
+  const choicesFor = id => {
     if (cache.has(id)) return cache.get(id);
     corpus ??= buildIndex();
     const card = corpus.byId.get(id);
@@ -178,4 +178,6 @@ const reverseChoices = (() => {
     cache.set(id, options);
     return options;
   };
+  choicesFor.authoredDistractors = authoredDistractors;
+  return choicesFor;
 })();
