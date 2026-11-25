@@ -15,7 +15,7 @@ const englishWord = /^[a-z]+(?:[' -][a-z]+)*$/i;
 function deckSpec(body, cards) {
   const size = body.count === undefined ? 6 : body.count;
   if (!Number.isInteger(size) || size < 1 || size > 20) return;
-  if (!['A1','A2','B1','B2'].includes(body.level) || !parts.has(body.part)
+  if (!['A1','A2','B1','B2','C1'].includes(body.level) || !parts.has(body.part)
     || !Array.isArray(body.history) || body.history.length > 800
     || !body.history.every(entry => Array.isArray(entry) && entry.length === 2
       && english(entry[0],70) && englishWord.test(entry[0]) && english(entry[1],260))) return;

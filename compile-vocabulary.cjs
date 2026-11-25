@@ -55,7 +55,7 @@ const common = {
 const wordPattern = /[\p{L}]+(?:'[\p{L}]+)*/gu;
 const missing = new Map();
 
-for (const level of ['A2', 'B1', 'B2']) {
+for (const level of ['A2', 'B1', 'B2', 'C1']) {
   const lines = fs.readFileSync('vocabulary-' + level.toLowerCase() + '.txt', 'utf8').trim().split(/\r?\n/);
   for (const line of lines) {
     const [partCode, annotated, translation] = line.split('|');

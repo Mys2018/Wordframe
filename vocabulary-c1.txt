@@ -1,0 +1,16 @@
+v|The committee=комитет will [scrutinise=тщательно изучить] every proposal=предложение before voting=голосование.|Комитет тщательно изучит каждое предложение перед голосованием.
+v|The new=новые evidence=доказательства may [undermine=подорвать] their argument=аргумент.|Новые доказательства могут подорвать их аргумент.
+v|We must [address=решить] the underlying=лежащие в основе causes=причины of the problem=проблема.|Мы должны устранить коренные причины проблемы.
+v|The findings=результаты [reinforce=подкрепляют] our original=первоначальный conclusion=вывод.|Результаты подкрепляют наш первоначальный вывод.
+v|The manager=руководитель tried=пытался to [alleviate=облегчить] the pressure=давление on staff=сотрудников.|Руководитель попытался снизить давление на сотрудников.
+n|Her [resilience=стойкость] helped=помогла her recover=восстановиться after failure=неудача.|Стойкость помогла ей оправиться после неудачи.
+n|The proposal=предложение has one [drawback=недостаток] that we cannot ignore=игнорировать.|У предложения есть недостаток, который мы не можем игнорировать.
+n|The witness=свидетель gave=дал a detailed=подробный [account=рассказ] of the incident=происшествие.|Свидетель подробно рассказал о происшествии.
+n|Their [commitment=приверженность] to quality=качество impressed=впечатлила the customers=покупателей.|Их приверженность качеству впечатлила покупателей.
+n|The sudden=внезапный [shortage=нехватка] of water=воды affected=затронула the entire=весь region=регион.|Внезапная нехватка воды затронула весь регион.
+a|Her explanation=объяснение was [coherent=последовательное] and easy=легко to follow=понять.|Её объяснение было последовательным и понятным.
+a|The research=исследование produced=дало [compelling=убедительные] evidence=доказательства of the effect=эффект.|Исследование дало убедительные доказательства этого эффекта.
+a|The results=результаты remain=остаются [inconclusive=неокончательными] despite further=дополнительные tests=тесты.|Несмотря на дополнительные проверки, результаты остаются неокончательными.
+a|The team=команда found=нашла a [viable=жизнеспособный] alternative=вариант after months=месяцы of discussion=обсуждение.|После многих месяцев обсуждения команда нашла жизнеспособный вариант.
+a|His remarks=замечания were [inadvertent=непреднамеренными] rather than deliberate=обдуманными.|Его замечания были непреднамеренными, а не обдуманными.
+

@@ -1,4 +1,25 @@
+(async function(){
+let account=null,remoteProgress=null;
+if(document.querySelector('meta[name="wordframe-accounts"]')){
+  const get=async()=>{const r=await fetch('/api/account/me',{cache:'no-store'});if(!r.ok)throw Error('Не удалось связаться с сервером');return r.json()};
+  let result;
+  try{result=await get()}catch{document.body.innerHTML='<main class="panel sidebox">Не удалось связаться с сервером. Обнови страницу.</main>';return}
+  if(!result.user){
+    const overlay=document.createElement('div');overlay.className='account-overlay';
+    overlay.innerHTML='<section class="account-panel"><span class="account-brand">WORDFRAME</span><h1>Английский в контексте</h1><p>Войди, чтобы продолжить обучение на любом устройстве.</p><div class="account-tabs"><button type="button" data-tab="login" aria-pressed="true">Вход</button><button type="button" data-tab="register" aria-pressed="false">Регистрация</button></div><form class="account-form"><label>Логин<input name="name" autocomplete="username" required minlength="3" maxlength="32" placeholder="Латинские буквы и цифры"></label><label>Пароль<input name="password" type="password" autocomplete="current-password" required minlength="10" maxlength="128"></label><p class="account-error" role="alert"></p><button class="primary" type="submit">Войти</button></form></section>';
+    document.body.append(overlay);
+    result=await new Promise(resolve=>{
+      let mode='login';const form=overlay.querySelector('form'),error=overlay.querySelector('.account-error');
+      overlay.querySelectorAll('[data-tab]').forEach(btn=>btn.onclick=()=>{mode=btn.dataset.tab;overlay.querySelectorAll('[data-tab]').forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));form.elements.password.autocomplete=mode==='login'?'current-password':'new-password';form.querySelector('[type=submit]').textContent=mode==='login'?'Войти':'Создать аккаунт';error.textContent=''});
+      form.onsubmit=async e=>{e.preventDefault();const button=form.querySelector('[type=submit]');button.disabled=true;error.textContent='';try{const response=await fetch('/api/account/'+mode,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Object.fromEntries(new FormData(form)))});const data=await response.json();if(!response.ok)throw Error(data.error||'Ошибка входа');overlay.remove();resolve(data)}catch(e){error.textContent=e.message||'Нет связи с сервером.'}finally{button.disabled=false}};
+    });
+  }
+  account=result.user;remoteProgress=result.progress;
+  const exit=document.createElement('button');exit.className='account-logout nav-icon';exit.setAttribute('aria-label','Выйти из аккаунта '+account.name);exit.title='Выйти из аккаунта';exit.innerHTML='<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10 17v3H4V4h6v3M14 8l4 4-4 4M8 12h10"/></svg><span class="nav-icon-label">Выйти</span>'; exit.onclick=async()=>{await fetch('/api/account/logout',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});location.reload()};document.querySelector('#main-nav').append(exit);
+}
 const paths={
+spark:'<path d="m12 3 1.7 5.3L19 10l-5.3 1.7L12 17l-1.7-5.3L5 10l5.3-1.7L12 3ZM19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15Z"/>',
+settings:'<path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8ZM19.4 15l1 1.8-2.2 2.2-1.8-1a8.3 8.3 0 0 1-1.9.8l-.6 2H10l-.6-2a8.3 8.3 0 0 1-1.9-.8l-1.8 1-2.2-2.2 1-1.8a8.3 8.3 0 0 1-.8-1.9l-2-.6v-3l2-.6a8.3 8.3 0 0 1 .8-1.9l-1-1.8L5.7 3l1.8 1a8.3 8.3 0 0 1 1.9-.8l.6-2h3.8l.6 2a8.3 8.3 0 0 1 1.9.8l1.8-1 2.2 2.2-1 1.8a8.3 8.3 0 0 1 .8 1.9l2 .6v3l-2 .6a8.3 8.3 0 0 1-.8 1.9Z"/>',
 layers:'<path d="m3 8 9-5 9 5-9 5zM3 12l9 5 9-5M3 16l9 5 9-5"/>',
 book:'<path d="M3 5c3-1 6-1 9 1 3-2 6-2 9-1v14c-3-1-6-1-9 1-3-2-6-2-9-1zM12 6v14"/>',
 chart:'<path d="M4 4v16h17M8 16v-5m5 5V6m5 10v-8"/>',
@@ -20,21 +41,25 @@ const gapBank=new Map(grammarTopics.flatMap(topic=>topic.exercises.map(exercise=
 const modeLabels=new Map([['en-ru','EN → RU'],['ru-en','RU → EN'],['gap','Пропуски']]);
 const mixedTopics='all-topics';
 const gameCollection='Casualties Unknown', allLevels='all-levels', allParts='all';
-const levels=Object.keys(source), key='wf-english-v1';
+const levels=[...Object.keys(source),'C1'], key=account?'wf-english-v1:user:'+account.id:'wf-english-v1';
 const levelLabels=new Map([[allLevels,'Все уровни'],...levels.map(level=>[level,level]),[gameCollection,gameCollection]]);
 const partLabels=new Map([
   [allParts,'Все части речи'],['phrasal','Фразовые глаголы'],['verb','Глаголы'],['noun','Существительные'],
   ['adj','Прилагательные'],['adv','Наречия'],['prep','Предлоги'],['conj','Союзы'],['det','Определители']
 ]);
-let state;try{state=JSON.parse(localStorage.getItem(key))}catch{}
+let state;if(account&&remoteProgress){state=remoteProgress;try{if(localStorage.getItem(key+':pending')&&confirm('Есть несохранённые на сервере изменения с этого устройства. Использовать их вместо серверного прогресса?'))state=JSON.parse(localStorage.getItem(key))||state}catch{}}else try{state=JSON.parse(localStorage.getItem(key))}catch{}
+if(account&&!state&&!remoteProgress){try{const old=localStorage.getItem('wf-english-v1');if(old&&confirm('Перенести сохранённый в этом браузере прогресс в аккаунт?'))state=JSON.parse(old)}catch{}}
 state=Object.assign({level:'A2',part:allParts,mode:'en-ru',gapTopic:mixedTopics,saved:[],sessions:{},records:{},days:{},review:null,
-  aiCards:[],aiDeckIds:[],activeAiDeck:false},state||{});
+  aiCards:[],aiDeckIds:[],activeAiDeck:false,gapCount:6},state||{});
+if(!Array.isArray(state.aiGapHistory))state.aiGapHistory=[];
+if(!Number.isInteger(state.gapCount)||state.gapCount<1||state.gapCount>20)state.gapCount=6;
 for(const card of state.aiCards)bank.set(card.id,card);
 if(!levelLabels.has(state.level))state.level='A2';
 if(!partLabels.has(state.part))state.part=allParts;
 if(!modeLabels.has(state.mode))state.mode='en-ru';
 if(!topicsById.has(state.gapTopic))state.gapTopic=mixedTopics;
-const writeState=()=>{try{localStorage.setItem(key,JSON.stringify(state))}catch{}};
+let syncTimer,syncQueue=Promise.resolve();
+const writeState=()=>{try{localStorage.setItem(key,JSON.stringify(state))}catch{}if(account){try{localStorage.setItem(key+':pending','1')}catch{}clearTimeout(syncTimer);syncTimer=setTimeout(()=>{const snapshot=JSON.stringify({progress:state});syncQueue=syncQueue.catch(()=>{}).then(async()=>{const r=await fetch('/api/account/progress',{method:'POST',headers:{'Content-Type':'application/json'},body:snapshot});if(!r.ok)throw Error('sync failed');if(JSON.stringify({progress:state})===snapshot)try{localStorage.removeItem(key+':pending')}catch{}}).catch(()=>note('Не удалось сохранить прогресс на сервере. Он остался в браузере.'))},500)}};
 const shuffle=items=>{const arr=[...items];for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}return arr};
 function build(ids){
   if(state.mode==='gap')return {ids,pos:0,answers:{},responses:{}};
@@ -65,7 +90,7 @@ function newWorkout(){
     const first=pool.findIndex(w=>w.id==='A2-0');
     if(first>=0)pool.unshift(pool.splice(first,1)[0]);
   }
-  return build(pool.slice(0,10).map(w=>w.id));
+  return build(pool.slice(0,state.mode==='gap'?state.gapCount:10).map(w=>w.id));
 }
 function session(){
   if(state.review)return state.review;
@@ -104,14 +129,49 @@ function page(){
   return ['stats','dictionary','grammar'].includes(section)?section:'practice';
 }
 const view=document.getElementById('view');
+const quotaCapable=Boolean(document.querySelector('meta[name="wordframe-quota"]'));
 const aiLocal=Boolean(document.querySelector('meta[name="wordframe-local-settings"]'));
+const aiGapBatchCapable=Boolean(document.querySelector('meta[name="wordframe-ai-gap-batch"]'));
+const aiC1Capable=Boolean(document.querySelector('meta[name="wordframe-ai-c1"]'));
 const aiCountCapable=Boolean(document.querySelector('meta[name="wordframe-ai-count"]'));
 let aiCount=6;
 const aiBatchCapable=Boolean(document.querySelector('meta[name="wordframe-ai-batch"]'));
 let aiEnabled=Boolean(document.querySelector('meta[name="wordframe-ai"]'));
 let aiSettings, settingsLoading=false, settingsBusy=false, settingsMessage='';
 const modelTests=new Map();
-if(aiLocal)document.querySelector('.lang').outerHTML='<a class="lang quietbtn settings-link" data-nav="settings" href="#settings">Настройки</a>';
+if(aiLocal){document.querySelector('.lang')?.remove();const settings=document.createElement('a');settings.className='settings-link nav-icon';settings.dataset.nav='settings';settings.href='#settings';settings.title='Настройки';settings.setAttribute('aria-label','Настройки');settings.innerHTML=icon('settings')+'<span class="nav-icon-label">Настройки</span>';document.querySelector('#main-nav').append(settings)}
+let quotaWrap,quotaButton,quotaPopover;
+if(account&&quotaCapable){
+  const nav=document.querySelector('#main-nav'),settings=nav.querySelector('.settings-link'),exit=nav.querySelector('.account-logout');
+  quotaWrap=document.createElement('div');quotaWrap.className='quota-wrap';
+  quotaWrap.innerHTML='<button class="quota-button" type="button" aria-label="Лимит ИИ" aria-expanded="false"><span class="quota-ring" aria-hidden="true"></span><span class="quota-mobile-label">Лимит ИИ</span></button><div class="quota-popover" role="status" hidden></div>';
+  nav.insertBefore(quotaWrap,settings);if(exit)nav.append(exit);
+  quotaButton=quotaWrap.querySelector('button');quotaPopover=quotaWrap.querySelector('.quota-popover');
+  quotaButton.addEventListener('click',()=>{const open=quotaPopover.hidden;quotaPopover.hidden=!open;quotaButton.setAttribute('aria-expanded',String(open));if(open){void refreshQuota();updateQuotaDisplay()}});
+  document.addEventListener('click',e=>{if(!quotaWrap.contains(e.target)){quotaPopover.hidden=true;quotaButton.setAttribute('aria-expanded','false')}});
+  setInterval(()=>{if(!quotaPopover.hidden)updateQuotaDisplay()},30000);
+}
+function updateQuotaDisplay(){
+  if(!quotaButton||!aiSettings)return;
+  let message,percent=100;
+  if(aiSettings.keySource==='personal')message='Свой ключ: общий лимит не действует.';
+  else if(!aiSettings.configured)message='Общий ключ пока не настроен.';
+  else {const q=aiSettings.quota;if(!q)return;percent=q.limit?100*q.remaining/q.limit:0;
+    if(!q.resetsAt||q.resetsAt<=Date.now()){percent=100;message='Доступно '+q.limit+' карточек.\nОсталось 100%.\nПериод начнётся при генерации.';}
+    else {const mins=Math.max(1,Math.ceil((q.resetsAt-Date.now())/60000));const hours=Math.floor(mins/60),minutes=mins%60;message='Осталось '+q.remaining+' из '+q.limit+' карточек.\nОсталось '+(Math.round(percent*10)/10)+'%.\nОбновится через '+(hours?hours+' ч ':'')+minutes+' мин.'}
+  }
+  quotaButton.style.setProperty('--quota-percent',percent+'%');quotaButton.setAttribute('aria-label','Лимит ИИ. '+message);quotaPopover.textContent=message;
+}
+async function refreshQuota(){
+  if(!quotaCapable||!account)return;
+  try{const res=await fetch('/api/settings',{cache:'no-store'});if(!res.ok)return;const data=await res.json();aiSettings=data;aiEnabled=data.configured;updateQuotaDisplay()}catch{}
+}
+const menuToggle=document.querySelector('.menu-toggle');
+function setMenu(open){menuToggle.setAttribute('aria-expanded',String(open));menuToggle.setAttribute('aria-label',open?'Закрыть меню':'Открыть меню')}
+menuToggle.addEventListener('click',()=>setMenu(menuToggle.getAttribute('aria-expanded')!=='true'));
+document.querySelector('#main-nav').addEventListener('click',e=>{if(e.target.closest('a,button')&&!e.target.closest('.quota-wrap'))setMenu(false)});
+document.addEventListener('click',e=>{if(!e.target.closest('.navwrap'))setMenu(false)});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&menuToggle.getAttribute('aria-expanded')==='true'){setMenu(false);menuToggle.focus()}});
 const aiExamples=new Map();
 let aiPending=false;
 let aiAuto=false;
@@ -146,7 +206,7 @@ function practiceControls(){
   return '<div id="practice-controls" class="practice-controls"><label class="filter-select">Уровень'
     +'<select id="practice-level">'+options(levelsAvailable,selectedLevel)+'</select></label>'
     +'<label class="filter-select">Часть речи<select id="practice-part">'+options(partLabels,state.part)+'</select></label>'
-    +(state.activeAiDeck&&!state.review&&aiCountCapable?'<label class="filter-select count-select">Карточек<input id="ai-count" type="number" min="1" max="20" step="1" list="ai-count-options" value="'+aiCount+'"><datalist id="ai-count-options"><option value="6"><option value="10"><option value="15"><option value="20"></datalist></label>':'')+dailyGoal()+'</div>';
+    +(state.activeAiDeck&&!state.review&&aiCountCapable?'<label class="filter-select count-select">Карточек<input id="ai-count" type="number" min="1" max="20" step="1" list="ai-count-options" value="'+aiCount+'"><datalist id="ai-count-options"><option value="6"><option value="10"><option value="15"><option value="20"></datalist></label>':'')+'</div>';
 }
 const head=(title,extra='')=>'<div class="rowhead"><h2>'+title+'</h2>'+extra+'</div>';
 const bar=n=>'<div class="meter"><b style="width:'+Math.min(100,n)+'%"></b></div>';
@@ -154,20 +214,20 @@ const escapeText=value=>String(value).replace(/[&<>]/g,char=>({'&':'&amp;','<':'
 function settingsPage(){
   if(!aiSettings)return head('Настройки')+'<div class="panel sidebox">'+escapeText(settingsMessage||'Загрузка…')
     +(settingsMessage?' '+btn('settings-retry','Повторить'):'')+'</div>';
-  const status=aiSettings.configured?'Ключ сохранён для текущего запуска.':'Ключ пока не добавлен.';
-  const options=aiSettings.models.map(model=>'<option value="'+model.id+'"'+(model.id===aiSettings.model?' selected':'')+'>'
-    +escapeText(model.label)+'</option>').join('');
+  const status=quotaCapable?(aiSettings.keySource==='personal'?'Используется твой ключ.':'Используется общий ключ.'):(aiSettings.configured?'Ключ сохранён для текущего запуска.':'Ключ пока не добавлен.');
+  const options=aiSettings.models.map(model=>'<option value="'+model.id+'"'+(model.id===aiSettings.model?' selected':'')+'>'+escapeText(model.label)+'</option>').join('');
   const results=[...modelTests.values()].map(result=>'<li><b>'+escapeText(result.label)+'</b><span>'
     +escapeText(result.status)+'</span>'+(result.sample?'<span lang="en">'+escapeText(result.sample)+'</span>':'')+'</li>').join('');
   return head('Настройки')+'<section class="panel sidebox ai-settings"><h3>Генерация через PlusVibe</h3>'
-    +'<p>'+status+' Ключ хранится в памяти локального сервера до его остановки.</p>'
+    +'<p>'+status+' Свой ключ хранится в зашифрованном виде на сервере.</p>'
     +'<form id="ai-settings-form"><fieldset'+(settingsBusy?' disabled':'')+'>'
-    +'<label>Ключ PlusVibe<input name="apiKey" class="answer-input" type="password" maxlength="246" placeholder="sk-pv-…"'
+    +(quotaCapable?'<div class="key-options" role="group" aria-label="Ключ для ИИ"><label><input type="radio" name="keySource" value="shared"'+(aiSettings.keySource!=='personal'?' checked':'')+'> Общий ключ · до 500 карточек за 5 часов</label><label><input type="radio" name="keySource" value="personal"'+(aiSettings.keySource==='personal'?' checked':'')+'> Свой ключ · без общего лимита</label></div>':'')
+    +'<label>Свой ключ PlusVibe<input name="apiKey" class="answer-input" type="password" maxlength="246" placeholder="sk-pv-…"'
     +' autocomplete="off" autocapitalize="off" spellcheck="false"></label>'
     +'<label>Модель<select name="model" class="answer-input">'+options+'</select></label>'
     +'<div class="settings-actions"><button class="primary" type="submit">Сохранить</button>'
-    +'<button class="quietbtn" type="submit" name="test" value="both">Сохранить и проверить модели</button></div>'
-    +'<p class="desc">Проверка отправляет по одному запросу к каждой модели. Claude Haiku и GPT-6.1 Terra платные.</p>'
+    +'<button class="quietbtn" type="submit" name="test" value="both">Сохранить и проверить</button></div>'
+    +'<p class="desc">Проверка отправляет один запрос к GPT-6.1 Terra. При использовании общего ключа попытка расходует лимит.</p>'
     +'</fieldset></form><p role="status">'+escapeText(settingsMessage)+'</p>'
     +(results?'<ul class="settings-results" aria-live="polite">'+results+'</ul>':'')+'</section>';
 }
@@ -189,6 +249,7 @@ async function loadSettings(){
   try{
     aiSettings=await settingsRequest('/api/settings');
     aiEnabled=aiSettings.configured;
+    updateQuotaDisplay();
   }catch{
     settingsMessage='Не удалось загрузить настройки.';
   }finally{
@@ -204,9 +265,10 @@ async function saveAiSettings(form,testBoth){
   settingsMessage='';
   form.querySelector('fieldset').disabled=true;
   try{
-    aiSettings=await settingsRequest('/api/settings',{model:fields.get('model'),...(key?{apiKey:key}:{})});
+    aiSettings=await settingsRequest('/api/settings',{model:fields.get('model'),...(quotaCapable?{keySource:fields.get('keySource')} : {}),...(key?{apiKey:key}:{})});
     form.elements.apiKey.value='';
     aiEnabled=aiSettings.configured;
+    updateQuotaDisplay();
     settingsMessage='Настройки сохранены.';
     modelTests.clear();
     if(testBoth){
@@ -240,7 +302,7 @@ async function saveAiSettings(form,testBoth){
   }
 }
 const aiButton=(kind,label)=>aiEnabled?'<button type="button" class="quietbtn" data-act="ai" data-val="'+kind+'"'
-  +(aiPending?' disabled aria-busy="true"':'')+' data-label="'+label+'">'+(aiPending?'Генерация…':label)+'</button>':'';
+  +(aiPending?' disabled aria-busy="true"':'')+' data-label="'+label+'">'+icon('spark')+'<span>'+(aiPending?'Генерация…':label)+'</span></button>':'';
 function topicOptions(active){
   return [...topicsByGroup].map(([group,topics])=>'<optgroup label="'+group+'">'+topics.map(topic=>
     '<option value="'+topic.id+'"'+(topic.id===active?' selected':'')+'>'+topic.title+'</option>'
@@ -361,7 +423,7 @@ function gapCard(s,exercise){
     +' aria-label="Ответ на английском" autocapitalize="off" autocomplete="off" spellcheck="false" maxlength="120" required>'
     +'<button type="submit" class="primary">Проверить</button></form>';
   const next=answered?btn('next',s.pos+1===s.ids.length?'Итоги':'Дальше','primary'):btn('skip','Пропустить '+icon('skip'),'textbtn');
-  const actions=(state.activeAiDeck?aiButton('gap','Новый пропуск · ИИ'):'')||'<span></span>';
+  const actions=(state.activeAiDeck?aiButton('gap','Новая подборка · ИИ'):'')||'<span></span>';
   return '<section class="panel exercise"><div class="cardtop"><span class="counter"><strong>'+topic.level
     +'</strong> Карточка '+(s.pos+1)+' / '+s.ids.length+'</span><span class="meta">'+topic.title+(exercise.topicId?' · ИИ':'')+'</span></div>'
     +'<div class="prompt"><p class="phrase" lang="en">'+phrase+'</p></div>'
@@ -378,24 +440,25 @@ function training(s){
     card=gap?gapCard(s,item):trainingCard(s,item);
   }else if(!s.ids.length){
     card=generated?'<section class="panel finish"><h3>Создай новую подборку</h3><p>'
-      +(gap?'Выбери тему, затем создай задание.':'Выбери уровень и часть речи, затем создай новые карточки.')+'</p>'
-      +aiButton(gap?'gap':'deck',gap?'Создать задание · ИИ':'Создать подборку · ИИ')+'</section>'
+      +(gap?'Выбери тему и количество, затем создай подборку.':'Выбери уровень и часть речи, затем создай новые карточки.')+'</p>'
+      +aiButton(gap?'gap':'deck',gap?'Создать пропуски · ИИ':'Создать подборку · ИИ')+'</section>'
       :'<section class="panel finish"><h3>В этой подборке пока нет карточек</h3>'
       +btn('level','Все уровни','primary',allLevels)+btn('part','Все части речи','quietbtn',allParts)+'</section>';
   }else{
     const good=s.ids.filter(id=>s.answers[id]===0).length;
     card='<section class="panel finish"><span class="tile">'+icon('check')+'</span><h3>Подборка пройдена</h3>'
       +'<p>Верных ответов — '+good+' из '+s.ids.length+'.</p>'+(good<s.ids.length?btn('mistakes',icon('repeat')+' Повторить ошибки'):'')
-      +(generated?aiButton(gap?'gap':'deck',gap?'Новое задание · ИИ':'Новая подборка · ИИ'):btn('new','Новая подборка','primary'))+'</section>';
+      +(generated?aiButton(gap?'gap':'deck',gap?'Новые пропуски · ИИ':'Новая подборка · ИИ'):btn('new','Новая подборка','primary'))+'</section>';
   }
   const sourceControls=aiBatchCapable?'<div class="source-switch" role="group" aria-label="Источник заданий">'
-    +selectionButtons(new Map([['prepared','Готовые'],['generated','С ИИ']]),'source',state.activeAiDeck?'generated':'prepared','quietbtn')+'</div>'
+    +selectionButtons(new Map([['prepared','Готовые'],['generated',icon('spark')+' ИИ']]),'source',state.activeAiDeck?'generated':'prepared','quietbtn')+'</div>'
     :aiLocal?'<p class="ai-upgrade-note">Подборки с ИИ доступны в <a href="http://127.0.0.1:8082/#practice">обновлённой версии Wordframe</a>.</p>':'';
   const modes='<div class="mode-controls" role="group" aria-label="Режим тренировки">'
     +selectionButtons(modeLabels,'mode',state.mode,'quietbtn')+'</div>';
   const controls=gap?'<div class="practice-controls"><label class="filter-select">Тема<select id="gap-topic"><option value="'+mixedTopics+'">Все темы</option>'
-    +topicOptions(state.gapTopic)+'</select></label>'+dailyGoal()+'</div>':practiceControls();
-  return head(state.review?'Повторение':batch?'Подборка от ИИ':'Тренировка')+sourceControls+modes+controls+'<div class="grid">'+card+'</div>';
+    +topicOptions(state.gapTopic)+'</select></label>'
+    +'<label class="filter-select count-select" title="Размер следующей подборки">Карточек<input id="gap-count" type="number" min="1" max="20" step="1" value="'+state.gapCount+'" aria-label="Количество карточек в следующей подборке"></label></div>':practiceControls();
+  return head(state.review?'Повторение':batch?'Подборка от ИИ':'Тренировка',sourceControls)+'<div class="training-switches">'+modes+dailyGoal()+'</div>'+controls+'<div class="grid">'+card+'</div>';
 }
 function entries(){const items=state.saved.map(id=>bank.get(id)).filter(Boolean).filter(w=>(w.word+' '+w.right).toLowerCase().includes(q.toLowerCase().trim()));return items.length?items.map(w=>'<article class="panel entry"><div><small>'+w.level+'</small><div><b lang="en">'+w.word+'</b> · '+w.right+'</div>'+entryContexts(w)+'</div><div class="tools">'+iconBtn('sound',w.id,'Прослушать фразу','volume')+iconBtn('save',w.id,'Убрать из словаря','save',true)+'</div></article>').join(''):'<p class="panel empty">По этому запросу слов пока нет.</p>'}
 function dictionary(){return head('Мой словарь',state.saved.length?btn('reviewSaved','Повторить слова','primary'):'')+(state.saved.length?'<input id="search" class="search" aria-label="Поиск по словарю" placeholder="Найти слово или перевод"><div class="list" id="entries">'+entries()+'</div>':'<div class="panel empty"><span class="tile">'+icon('book')+'</span><h3>Здесь будут твои слова</h3><p>Нажми на закладку в карточке, чтобы сохранить слово вместе с примером.</p>'+btn('practice','К тренировке','primary')+'</div>')}
@@ -479,8 +542,35 @@ function stopAutoGeneration(){
   aiAuto=false;
   view.querySelector('[data-act="ai-auto"]')?.setAttribute('aria-pressed','false');
 }
+async function generateGapBatch(){
+  const count=state.gapCount,s=session(),originalPage=location.hash,originalTopic=state.gapTopic;
+  if(!aiGapBatchCapable){note('Для создания подборки пропусков требуется обновить сервер.');return}
+  if(!Number.isInteger(count)||count<1||count>20){note('Укажи количество карточек от 1 до 20.');return}
+  aiPending=true;
+  const button=view.querySelector('[data-act="ai"][data-val="gap"]');
+  if(button){button.disabled=true;button.setAttribute('aria-busy','true');button.innerHTML=icon('spark')+'<span>Создаём подборку…</span>'}
+  let updated=false;
+  try{
+    const history=[...state.aiGapHistory,...Object.values(s.aiGaps??{}).map(item=>item.sentence)].filter(value=>typeof value==='string'&&value.length<=280).slice(-50);
+    const response=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({kind:'gap-batch',topic:originalTopic,count,history})});
+    const data=await response.json();
+    if(!response.ok){note(data.error??'Генерация не удалась.');return}
+    if(location.hash!==originalPage||state.mode!=='gap'||!state.activeAiDeck||state.gapTopic!==originalTopic||session()!==s)return;
+    if(!Array.isArray(data.cards)||data.cards.length!==count){note('Не удалось получить подборку нужного размера.');return}
+    const fresh=build([]);fresh.aiGaps={};
+    for(const card of data.cards){const id='ai-gap-'+crypto.randomUUID();fresh.ids.push(id);fresh.aiGaps[id]=card}
+    state.aiGapHistory=[...new Set([...history,...data.cards.map(card=>card.sentence)])].slice(-100);
+    state.sessions[workoutKey()]=fresh;writeState();updated=true;
+  }catch{note('Не получилось завершить генерацию. Попробуй ещё раз.')}
+  finally{
+    void refreshQuota();aiPending=false;
+    if(page()==='practice')render();
+    if(updated&&phoneLayout.matches)view.querySelector('.exercise')?.scrollIntoView({block:'start'});
+  }
+}
 async function generate(kind,auto=false){
   if(!aiEnabled||aiPending)return;
+  if(kind==='gap'&&!auto&&state.activeAiDeck&&!state.review)return generateGapBatch();
   const inRules=kind==='examples';
   const batch=kind==='deck';
   const s=inRules?null:session();
@@ -491,6 +581,7 @@ async function generate(kind,auto=false){
   const id=batch?'deck':inRules?(topicsById.get(route()[1])??grammarTopics[0]).id
     :kind==='gap'?gapTopic.id:cardId;
   if(!id)return;
+  if(batch&&state.level==='C1'&&!aiC1Capable){note('Для ИИ-подборок C1 требуется обновить сервер.');return}
   if(batch&&(!Number.isInteger(aiCount)||aiCount<1||aiCount>20)){
     note('Укажи количество карточек от 1 до 20.');
     view.querySelector('#ai-count')?.focus();
@@ -508,7 +599,7 @@ async function generate(kind,auto=false){
   const setButtonsBusy=busy=>view.querySelectorAll('[data-act="ai"]').forEach(button=>{
     button.disabled=busy;
     button.setAttribute('aria-busy',String(busy));
-    button.textContent=busy?'Генерация…':button.dataset.label;
+    button.innerHTML=icon('spark')+'<span>'+escapeText(busy?'Генерация…':button.dataset.label)+'</span>';
   });
   setButtonsBusy(true);
   let updated=false;
@@ -520,6 +611,7 @@ async function generate(kind,auto=false){
       }:{kind,id})
     });
     const data=await response.json();
+    void refreshQuota();
     if(!response.ok){
       note(data.error??'Генерация не удалась.');
       if(auto)stopAutoGeneration();
@@ -555,6 +647,7 @@ async function generate(kind,auto=false){
     note('Генерация не удалась. Попробуй ещё раз.');
     if(auto)stopAutoGeneration();
   }finally{
+    void refreshQuota();
     aiPending=false;
     if(updated){
       render();
@@ -675,6 +768,13 @@ view.addEventListener('input',e=>{if(e.target.id==='search'){q=e.target.value;do
 });
 view.addEventListener('change',e=>{
   const {id,value}=e.target;
+  if(id==='gap-count'){
+    const count=Number(value);
+    if(!Number.isInteger(count)||count<1||count>20){note('Укажи количество от 1 до 20.');e.target.value=state.gapCount;return}
+    state.gapCount=count;
+    if(!state.activeAiDeck&&!state.review){const current=session();if(!Object.keys(current.answers).length)state.sessions[workoutKey()]=newWorkout();else note('Количество применится к следующей подборке.')}
+    writeState();render();view.querySelector('#gap-count')?.focus({preventScroll:true});return;
+  }
   if(id==='practice-level'&&levelLabels.has(value))return action('level',value);
   if(id==='practice-part'&&partLabels.has(value))return action('part',value);
   if(id==='grammar-page-topic'&&topicsById.has(value))location.hash='grammar/'+value;
@@ -775,4 +875,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeGloss()});
 view.addEventListener('focusout',e=>{if(e.target===activeGloss)closeGloss()});
 window.addEventListener('scroll',positionGloss,{passive:true});
 window.addEventListener('resize',positionGloss);
+if(account)void loadSettings();
 
+
+})().catch(error=>{console.error(error);document.body.insertAdjacentHTML("afterbegin","<p>Не удалось открыть Wordframe. Обнови страницу.</p>")});

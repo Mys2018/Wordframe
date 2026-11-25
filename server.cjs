@@ -4,14 +4,11 @@ const { readFileSync } = require('node:fs');
 const { join } = require('node:path');
 const { runInNewContext } = require('node:vm');
 const { deckSpec } = require('./deck.cjs');
+const { gapBatchSpec } = require('./gap-batch.cjs');
 
 const provider = 'https://plusvibeapi.ru/v1';
-const haiku = 'claude-haiku-5.5';
-const models = [
-  { id: 'deepseek-v4-flash-0731:free', label: 'DeepSeek V4 Flash · бесплатно' },
-  { id: haiku, label: 'Claude Haiku 5.5 · платно' },
-  { id: 'gpt-6.1-terra', label: 'GPT-6.1 Terra · платно' }
-];
+const terra = 'gpt-6.1-terra';
+const models = [{ id: terra, label: 'GPT-6.1 Terra' }];
 const allowedModel = id => models.some(model => model.id === id);
 const dist = join(__dirname, 'dist');
 const assets = new Map([
@@ -86,45 +83,65 @@ function reply(res, status, data) {
   res.end(JSON.stringify(data));
 }
 
-function wordframeServer({ apiKey, password, model = haiku, localSettings = false, request = fetch } = {}) {
+function wordframeServer({ apiKey, password, token, model = terra, localSettings = false, request = fetch, accountStore } = {}) {
+  if (token && !/^[A-Za-z0-9_-]{32,128}$/.test(token)) throw new Error('Токен должен содержать от 32 до 128 символов A–Z, a–z, 0–9, _ или -.');
+  const credential = token || password;
+  const failures = new Map();
+  if (accountStore && localSettings) throw new Error('Настройки ключа через браузер недоступны при включённых аккаунтах.');
   if (!allowedModel(model)) throw new Error('Неизвестная модель Wordframe.');
   let activeKey = apiKey?.trim();
   let activeModel = model;
   const settings = () => ({ configured: Boolean(activeKey), model: activeModel, models });
-  let recentCalls = [];
   let busy = false;
   return createServer(async (req, res) => {
     if (localSettings && (req.socket.remoteAddress !== '127.0.0.1'
       || !/^(?:127\.0\.0\.1|localhost)(?::\d{1,5})?$/i.test(req.headers.host ?? ''))) {
       return reply(res, 403, { error: 'Открой Wordframe по адресу localhost.' });
     }
-    if (password) {
+    if (credential) {
+      const now = Date.now();
+      const address = req.socket.remoteAddress ?? '';
+      const failure = failures.get(address);
+      if (failure && failure.until > now) return reply(res, 429, { error: 'Слишком много попыток входа. Попробуй позже.' });
+      if (failure && now - failure.start > 15 * 60_000) failures.delete(address);
       const provided = Buffer.from(req.headers.authorization ?? '');
-      const expected = Buffer.from('Basic ' + Buffer.from('wordframe:' + password).toString('base64'));
+      const expected = Buffer.from('Basic ' + Buffer.from('wordframe:' + credential).toString('base64'));
       if (provided.length !== expected.length || !timingSafeEqual(provided, expected)) {
+        const entry = failures.get(address) ?? { start: now, count: 0, until: 0 };
+        if (++entry.count >= 10) entry.until = now + 15 * 60_000;
+        failures.set(address, entry);
+        if (failures.size > 1000) failures.delete(failures.keys().next().value);
         res.writeHead(401, { 'WWW-Authenticate': 'Basic realm="Wordframe", charset="UTF-8"', 'Cache-Control': 'no-store' });
         res.end();
         return;
       }
     }
     const path = req.url.split('?')[0];
-    if (localSettings && req.method === 'GET' && path === '/api/settings') return reply(res, 200, settings());
+    if (accountStore && await accountStore.handle(req,res,path)) return;
+    const account = accountStore?.session(req);
+    if (accountStore && (path === '/api/generate' || path.startsWith('/api/settings')) && !account) return reply(res,401,{error:'Войди в аккаунт.'});
+    let personal;
+    try { personal = account ? {...accountStore.aiSettings(account.id),model} : null; }
+    catch { return reply(res,500,{error:'Не удалось прочитать настройки ключа. Обратись к владельцу сервера.'}); }
+    const currentSettings = () => personal ? {configured:Boolean(personal.source==='personal'?personal.key:activeKey),keySource:personal.source,model:personal.model,models,quota:personal.source==='personal'?null:accountStore.quota(account.id)} : settings();
+    if ((localSettings || accountStore) && req.method === 'GET' && path === '/api/settings') return reply(res, 200, currentSettings());
     if (req.method === 'GET') {
       const file = path === '/' ? '/index.html' : path;
       if (!assets.has(file)) return reply(res, 404, { error: 'Страница не найдена.' });
       let body = readFileSync(join(dist, file.slice(1)));
-      if (file === '/index.html' && (activeKey || localSettings)) {
-        const tags = (activeKey ? '<meta name="wordframe-ai" content="enabled">' : '')
-          + (localSettings ? '<meta name="wordframe-local-settings" content="enabled">' : '')
-          + '<meta name="wordframe-ai-batch" content="enabled"><meta name="wordframe-ai-count" content="enabled">';
+      if (file === '/index.html' && (activeKey || localSettings || accountStore)) {
+        const tags = (!accountStore && activeKey ? '<meta name="wordframe-ai" content="enabled">' : '')
+          + (localSettings || accountStore ? '<meta name="wordframe-local-settings" content="enabled">' : '')
+          + (accountStore ? '<meta name="wordframe-accounts" content="enabled">' : '')
+          + '<meta name="wordframe-ai-batch" content="enabled"><meta name="wordframe-ai-count" content="enabled"><meta name="wordframe-ai-c1" content="enabled"><meta name="wordframe-quota" content="enabled"><meta name="wordframe-ai-gap-batch" content="enabled">';
         body = body.toString('utf8').replace('</head>', tags + '</head>');
       }
       res.writeHead(200, { 'Content-Type': assets.get(file), 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' });
       res.end(body);
       return;
     }
-    const changeSettings = localSettings && path === '/api/settings';
-    const testModel = localSettings && path === '/api/settings/test';
+    const changeSettings = (localSettings || accountStore) && path === '/api/settings';
+    const testModel = (localSettings || accountStore) && path === '/api/settings/test';
     if (req.method !== 'POST' || (!changeSettings && !testModel && path !== '/api/generate')) {
       return reply(res, 404, { error: 'Запрос не найден.' });
     }
@@ -148,30 +165,43 @@ function wordframeServer({ apiKey, password, model = haiku, localSettings = fals
         && (typeof body.apiKey !== 'string' || !/^sk-pv-[!-~]{1,240}$/.test(body.apiKey)))) {
         return reply(res, 400, { error: 'Выбери модель и проверь формат ключа PlusVibe.' });
       }
-      if (body.apiKey) activeKey = body.apiKey;
-      activeModel = body.model;
-      return reply(res, 200, settings());
+      if (personal) {
+        if (!['shared','personal'].includes(body.keySource)) return reply(res,400,{error:'Выбери общий или свой ключ.'});
+        if (body.keySource==='personal' && !body.apiKey && !personal.key) return reply(res,400,{error:'Введи свой ключ PlusVibe.'});
+        try { accountStore.saveAiSettings(account.id,body.keySource,body.apiKey); }
+        catch { return reply(res,500,{error:'Не удалось сохранить ключ. Обратись к владельцу сервера.'}); }
+        if (body.apiKey) personal.key = body.apiKey; personal.source = body.keySource; personal.model = body.model;
+      }
+      else { if (body.apiKey) activeKey = body.apiKey; activeModel = body.model; }
+      return reply(res, 200, currentSettings());
     }
-    if (!activeKey) return reply(res, 503, { error: 'Добавь ключ PlusVibe в настройках Wordframe.' });
-    const chosenModel = testModel ? body?.model : activeModel;
+    const shared = Boolean(personal && personal.source === 'shared');
+    const requestKey = personal ? (shared ? activeKey : personal.key) : activeKey;
+    if (!requestKey) return reply(res, 503, { error: 'Добавь ключ PlusVibe в настройках Wordframe.' });
+    const chosenModel = testModel ? body?.model : (personal ? personal.model : activeModel);
     if (!allowedModel(chosenModel)) return reply(res, 400, { error: 'Неизвестная модель Wordframe.' });
-    const batch = !testModel && body?.kind === 'deck';
+    const deckBatch = !testModel && body?.kind === 'deck';
+    const gapBatch = !testModel && body?.kind === 'gap-batch';
+    const batch = deckBatch || gapBatch;
     const spec = testModel ? generationSpec('gap', 'present-simple')
-      : batch ? deckSpec(body, types.cards) : generationSpec(body?.kind, body?.id);
+      : deckBatch ? deckSpec(body, types.cards) : gapBatch ? gapBatchSpec(body,types.topics,generationSpec) : generationSpec(body?.kind, body?.id);
     if (!spec) return reply(res, 400, { error: 'Такой карточки или темы нет.' });
-    recentCalls = recentCalls.filter(time => Date.now() - time < 3_600_000);
-    if (busy || recentCalls.length >= 40) return reply(res, 429, { error: 'Генерация уже идёт или достигнут лимит. Попробуй позже.' });
-    recentCalls.push(Date.now());
+    if (busy) return reply(res, 429, { error: 'Другая генерация уже идёт. Попробуй немного позже.' });
+    if (shared) {
+      const amount = batch ? (body.count ?? 6) : body.kind === 'examples' ? 2 : 1;
+      const quota = accountStore.quota(account.id, amount);
+      if (!quota.allowed) return reply(res,429,{error:'Общий лимит закончился. Дождись обновления или добавь свой ключ.',quota});
+    }
     busy = true;
     try {
-      const useMessages = chosenModel === haiku;
+      const useMessages = false;
       const system = 'You write clear English-learning material for Russian speakers. Return only raw JSON, without Markdown. ' + spec.instruction;
       const user = { role: 'user', content: JSON.stringify(spec.input) };
       const payload = useMessages
         ? { model: chosenModel, max_tokens: batch ? Math.min(16000, 1500 + (body.count ?? 6) * 650) : 950, system, thinking: { type: 'disabled' }, messages: [user] }
         : { model: chosenModel, max_tokens: batch ? Math.min(16000, 1500 + (body.count ?? 6) * 650) : 950, response_format: { type: 'json_object' }, messages: [{ role: 'system', content: system }, user] };
-      const headers = useMessages ? { 'x-api-key': activeKey, 'anthropic-version': '2023-06-01' }
-        : { Authorization: 'Bearer ' + activeKey };
+      const headers = useMessages ? { 'x-api-key': requestKey, 'anthropic-version': '2023-06-01' }
+        : { Authorization: 'Bearer ' + requestKey };
       const upstream = await request(provider + (useMessages ? '/messages' : '/chat/completions'), {
         method: 'POST', redirect: 'error', signal: AbortSignal.timeout(batch ? 120_000 : 45_000),
         headers: { ...headers, 'Content-Type': 'application/json' },
@@ -188,6 +218,9 @@ function wordframeServer({ apiKey, password, model = haiku, localSettings = fals
         return reply(res, 502, { error });
       }
       const output = await upstream.json();
+      if (output.usage && Number.isFinite(output.usage.total_tokens)) {
+        console.log(JSON.stringify({event:'ai_usage',kind:body.kind,count:batch?(body.count??6):1,prompt_tokens:output.usage.prompt_tokens,completion_tokens:output.usage.completion_tokens,total_tokens:output.usage.total_tokens}));
+      }
       if (useMessages && (upstream.headers.get('x-pv-dropped-params')?.includes('thinking')
         || output.content?.some(block => ['thinking', 'redacted_thinking'].includes(block.type)))) {
         return reply(res, 502, { error: 'PlusVibe не отключил рассуждение для этого запроса Haiku.' });
@@ -196,7 +229,7 @@ function wordframeServer({ apiKey, password, model = haiku, localSettings = fals
         : output.choices?.[0]?.message?.content;
       const jsonBlock = content?.trim().match(/^```(?:json)?\s*([\s\S]*?)\s*```$/i);
       const result = spec.validate(JSON.parse(jsonBlock?.[1] ?? content));
-      if (!result) return reply(res, 502, { error: batch?'Не удалось получить нужное количество новых карточек без повторов. Попробуй ещё раз или выбери меньше.':'Не получилось получить корректный пример. Попробуй ещё раз.' });
+      if (!result) return reply(res, 502, { error: batch?'Не удалось получить нужное количество разных заданий. Попробуй ещё раз или выбери меньше.':'Не получилось получить корректный пример. Попробуй ещё раз.' });
       reply(res, 200, result);
     } catch {
       reply(res, 502, { error: 'Не получилось получить корректный ответ от модели. Попробуй ещё раз.' });
@@ -209,10 +242,13 @@ function wordframeServer({ apiKey, password, model = haiku, localSettings = fals
 if (require.main === module) {
   const host = process.env.HOST || '127.0.0.1';
   const password = process.env.WORDFRAME_PASSWORD;
-  if (host !== '127.0.0.1' && !password) throw new Error('Для внешнего доступа нужен WORDFRAME_PASSWORD.');
-  const localSettings = host === '127.0.0.1' && !password;
-  const model = process.env.PLUSVIBE_MODEL || (localSettings ? models[0].id : haiku);
-  wordframeServer({ apiKey: process.env.PLUSVIBE_API_KEY, password, model, localSettings }).listen(process.env.PORT || 8080, host, () => {
+  const token = process.env.WORDFRAME_TOKEN;
+  if (host !== '127.0.0.1' && !password && !token) throw new Error('Для внешнего доступа нужен WORDFRAME_PASSWORD.');
+  const localSettings = host === '127.0.0.1' && !password && !token && !process.env.WORDFRAME_ACCOUNTS;
+  const model = terra;
+  if (process.env.WORDFRAME_ACCOUNTS === '1' && !/^[a-f0-9]{64}$/i.test(process.env.WORDFRAME_ENCRYPTION_KEY ?? '')) throw new Error('Не настроен ключ шифрования аккаунтов.');
+  const accountStore = process.env.WORDFRAME_ACCOUNTS === '1' ? require('./accounts.cjs').accounts({file:process.env.WORDFRAME_DB || '.env.wordframe.sqlite',secure:process.env.WORDFRAME_INSECURE_LOCAL !== '1',encryptionKey:process.env.WORDFRAME_ENCRYPTION_KEY}) : undefined;
+  wordframeServer({ accountStore, apiKey: process.env.PLUSVIBE_API_KEY, password, token, model, localSettings }).listen(process.env.PORT || 8080, host, () => {
     console.log('Wordframe слушает на ' + host + ':' + (process.env.PORT || 8080));
   });
 }
