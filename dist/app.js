@@ -59,7 +59,6 @@ const cleared=s=>s.replace(/[\[\]]/g,'');
 const contextLabel=index=>index===0?'Игровая ситуация':'Простой пример';
 const contextIndex=(w,s)=>s.contexts?.[w.id]??0;
 const currentContext=(w,s)=>w.contexts?.[contextIndex(w,s)]??w;
-const glossPrompt='Нажми на подчёркнутое слово, чтобы увидеть перевод.';
 function marked(s,answered){
   let i=0;
   return s.replace(/\[([^\]]+)\]|[\p{L}]+(?:'[\p{L}]+)*/gu,(token,target)=>{
@@ -71,6 +70,7 @@ function marked(s,answered){
 const day=()=>{const d=new Date();return [d.getFullYear(),d.getMonth()+1,d.getDate()].join('-')};
 const page=()=>['stats','dictionary'].includes(location.hash.slice(1))?location.hash.slice(1):'practice';
 const view=document.getElementById('view');
+const phoneLayout=window.matchMedia('(max-width:680px)');
 const glossBubble=document.createElement('div');
 glossBubble.id='word-translation';
 glossBubble.className='gloss-bubble';
@@ -78,7 +78,7 @@ glossBubble.setAttribute('role','tooltip');
 glossBubble.setAttribute('lang','ru');
 glossBubble.hidden=true;
 document.body.append(glossBubble);
-let hint=false,q='',timer,activeGloss;
+let hint=false,q='',timer,activeGloss,filtersOpen=false;
 function note(msg){const e=document.getElementById('notice');e.textContent=msg;e.classList.add('show');clearTimeout(timer);timer=setTimeout(()=>e.classList.remove('show'),2800)}
 function speak(context){if(!('speechSynthesis'in window)){note('Этот браузер не поддерживает озвучку.');return}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(cleared(context.sentence));u.lang='en-US';u.rate=.9;const v=speechSynthesis.getVoices().find(v=>/^en[-_]/i.test(v.lang));if(v)u.voice=v;u.onerror=e=>{if(!['canceled','interrupted'].includes(e.error))note('Английская озвучка сейчас недоступна в браузере.')};speechSynthesis.speak(u)}
 const btn=(action,label,cls='quietbtn',val='')=>'<button class="'+cls+'" data-act="'+action+'" data-val="'+val+'">'+label+'</button>';
@@ -88,7 +88,7 @@ function practiceControls(){
     return [...labels].map(([value,label])=>'<button type="button" data-act="'+action+'" data-val="'+value
       +'" aria-pressed="'+(value===active)+'">'+label+'</button>').join('');
   }
-  return '<div class="practice-controls"><div class="levels" role="group" aria-label="Уровень или подборка">'
+  return '<div id="practice-controls" class="practice-controls'+(filtersOpen?' is-open':'')+'"><div class="levels" role="group" aria-label="Уровень или подборка">'
     +buttons(levelLabels,'level',state.level)+'</div><div class="practice-filters" role="group" aria-label="Часть речи">'
     +buttons(partLabels,'part',state.part)+'</div></div>';
 }
@@ -126,7 +126,7 @@ function trainingCard(s,w){
     +(s.pos+1)+' / '+s.ids.length+'</span><div class="tools">'+iconBtn('sound',id,'Прослушать фразу','volume')
     +iconBtn('save',id,saved?'Убрать из словаря':'Сохранить в словарь','save',saved)+'</div></div>'+contextControls(w,s)
     +'<div class="prompt"><span class="quote" aria-hidden="true">“</span><p class="phrase" lang="en">'+marked(context.sentence,answered)
-    +'</p><div class="glossnote">'+glossPrompt+'</div></div>'
+    +'</p></div>'
     +'<h3 class="ask">Как переводится выделенное слово'+(w.word.includes(' ')?'сочетание':'')+'?</h3>'
     +'<div class="choices">'+choices+'</div>'+feedback+(w.hint&&hint&&!answered?'<p class="hint">'+w.hint+'</p>':'')
     +'<div class="actions">'+actions+'</div></section>';
@@ -145,7 +145,9 @@ function training(s){
       +'<p>Верных ответов — '+good+' из '+s.ids.length+'.</p>'+(good<s.ids.length?btn('mistakes',icon('repeat')+' Повторить ошибки'):'')
       +btn('new','Новая подборка','primary')+'</section>';
   }
-  return head(state.review?'Повторение':'Тренировка')+practiceControls()+'<div class="grid">'+card+rail()+'</div>';
+  const toggle='<button type="button" class="quietbtn filters-toggle" data-act="filters" aria-controls="practice-controls" aria-expanded="'
+    +filtersOpen+'">Фильтры</button>';
+  return head(state.review?'Повторение':'Тренировка',toggle)+practiceControls()+'<div class="grid">'+card+rail()+'</div>';
 }
 function entries(){const items=state.saved.map(id=>bank.get(id)).filter(Boolean).filter(w=>(w.word+' '+w.right).toLowerCase().includes(q.toLowerCase().trim()));return items.length?items.map(w=>'<article class="panel entry"><div><small>'+w.level+'</small><div><b lang="en">'+w.word+'</b> · '+w.right+'</div>'+entryContexts(w)+'</div><div class="tools">'+iconBtn('sound',w.id,'Прослушать фразу','volume')+iconBtn('save',w.id,'Убрать из словаря','save',true)+'</div></article>').join(''):'<p class="panel empty">По этому запросу слов пока нет.</p>'}
 function dictionary(){return head('Мой словарь',state.saved.length?btn('reviewSaved','Повторить слова','primary'):'')+(state.saved.length?'<input id="search" class="search" aria-label="Поиск по словарю" placeholder="Найти слово или перевод"><div class="list" id="entries">'+entries()+'</div>':'<div class="panel empty"><span class="tile">'+icon('book')+'</span><h3>Здесь будут твои слова</h3><p>Нажми на закладку в карточке, чтобы сохранить слово вместе с примером.</p>'+btn('practice','К тренировке','primary')+'</div>')}
@@ -167,13 +169,35 @@ function render(){
     lastTraining={session:s,pos:s.pos,answered};
     return;
   }
+  filtersOpen=false;
   lastTraining=undefined;
   view.innerHTML=p==='stats'?statistics():dictionary();
   const search=document.getElementById('search');
   if(search)search.value=q;
 }
-function answer(n){const s=session(),id=s.ids[s.pos];if(!id||s.answers[id]!==undefined)return;s.answers[id]=n;if(n!==-1){const r=state.records[id]||(state.records[id]={n:0,ok:0});r.n++;if(n===0)r.ok++;state.days[day()]=(state.days[day()]||0)+1}hint=false;writeState();render()}
+function answer(n){
+  const s=session(),id=s.ids[s.pos];
+  if(!id||s.answers[id]!==undefined)return;
+  s.answers[id]=n;
+  if(n!==-1){
+    const r=state.records[id]||(state.records[id]={n:0,ok:0});
+    r.n++;
+    if(n===0)r.ok++;
+    state.days[day()]=(state.days[day()]||0)+1;
+  }
+  hint=false;
+  filtersOpen=false;
+  writeState();
+  render();
+  if(phoneLayout.matches)view.querySelector('[data-act="next"]').scrollIntoView({block:'nearest'});
+}
 function action(a,val){if(a==='sound'){const w=bank.get(val);speak(page()==='practice'?currentContext(w,session()):w.contexts?.[0]??w);return}
+if(a==='filters'){
+  filtersOpen=!filtersOpen;
+  view.querySelector('#practice-controls').classList.toggle('is-open',filtersOpen);
+  view.querySelector('.filters-toggle').setAttribute('aria-expanded',String(filtersOpen));
+  return;
+}
 if(a==='context'){
   const s=session(),w=bank.get(s.ids[s.pos]),index=Number(val);
   if(!w?.contexts?.[index])return;
@@ -198,11 +222,15 @@ if(a==='level'||a==='part'){
 if(a==='save'){const i=state.saved.indexOf(val);if(i<0)state.saved.unshift(val);else state.saved.splice(i,1);note(i<0?'Слово сохранено':'Слово убрано из словаря')}
 if(a==='hint')hint=!hint;
 if(a==='dictionary'||a==='practice'){location.hash=a;return}
-if(a==='next'){const s=session();if(s.answers[s.ids[s.pos]]===undefined)return;s.pos++;hint=false}
+if(a==='next'){const s=session();if(s.answers[s.ids[s.pos]]===undefined)return;s.pos++;hint=false;filtersOpen=false}
 if(a==='new'){state.review=null;state.sessions[workoutKey()]=newWorkout();hint=false}
 if(a==='reviewSaved'){if(!state.saved.length)return;state.review=build(shuffle(state.saved).slice(0,10));hint=false;location.hash='practice'}
 if(a==='mistakes'){const s=session();state.review=build(shuffle(s.ids.filter(id=>s.answers[id]!==0)));hint=false}
-writeState();render()}
+writeState();render();
+if(a==='next'&&phoneLayout.matches){
+  const card=view.querySelector('.exercise, .finish');
+  if(card.getBoundingClientRect().top<0)card.scrollIntoView({block:'start'});
+}}
 view.addEventListener('click',e=>{const b=e.target.closest('button[data-act]');if(b&&!b.disabled)action(b.dataset.act,b.dataset.val)});
 view.addEventListener('input',e=>{if(e.target.id==='search'){q=e.target.value;document.getElementById('entries').innerHTML=entries()}});
 window.addEventListener('hashchange',()=>{q='';hint=false;render()});
