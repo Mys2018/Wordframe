@@ -76,7 +76,13 @@ function session(){
 const cleared=s=>s.replace(/[\[\]]/g,'');
 const contextLabel=index=>index===0?'Игровая ситуация':'Простой пример';
 const contextIndex=(w,s)=>s.contexts?.[w.id]??0;
-const currentContext=(w,s)=>w.contexts?.[contextIndex(w,s)]??w;
+const currentContext=(w,s)=>contextIndex(w,s)==='ai'&&s.aiContexts?.[w.id]
+  ? s.aiContexts[w.id] : w.contexts?.[contextIndex(w,s)]??w.contexts?.[0]??w;
+function currentGap(s){
+  const id=s.ids[s.pos];
+  const generated=s.aiGaps?.[id];
+  return generated?{...generated,id,topic:topicsById.get(generated.topicId)}:gapBank.get(id);
+}
 function marked(s,answered){
   let i=0;
   return s.replace(/\[([^\]]+)\]|[\p{L}]+(?:'[\p{L}]+)*/gu,(token,target)=>{
@@ -92,6 +98,9 @@ function page(){
   return ['stats','dictionary','grammar'].includes(section)?section:'practice';
 }
 const view=document.getElementById('view');
+const aiEnabled=Boolean(document.querySelector('meta[name="wordframe-ai"]'));
+const aiExamples=new Map();
+let aiPending=false;
 const phoneLayout=window.matchMedia('(max-width:680px)');
 const glossBubble=document.createElement('div');
 glossBubble.id='word-translation';
@@ -117,6 +126,8 @@ function practiceControls(){
 const head=(title,extra='')=>'<div class="rowhead"><h2>'+title+'</h2>'+extra+'</div>';
 const bar=n=>'<div class="meter"><b style="width:'+Math.min(100,n)+'%"></b></div>';
 const escapeText=value=>String(value).replace(/[&<>]/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[char]));
+const aiButton=(kind,label)=>aiEnabled?'<button type="button" class="quietbtn" data-act="ai" data-val="'+kind+'"'
+  +(aiPending?' disabled aria-busy="true"':'')+' data-label="'+label+'">'+(aiPending?'Генерация…':label)+'</button>':'';
 function topicOptions(active){
   return [...topicsByGroup].map(([group,topics])=>'<optgroup label="'+group+'">'+topics.map(topic=>
     '<option value="'+topic.id+'"'+(topic.id===active?' selected':'')+'>'+topic.title+'</option>'
@@ -127,20 +138,24 @@ function grammar(){
   const index=[...topicsByGroup].map(([group,topics])=>'<div class="grammar-group"><h3>'+group+'</h3>'+topics.map(topic=>
     '<a class="grammar-topic" href="#grammar/'+topic.id+'"'+(active===topic?' aria-current="true"':'')+'>'+topic.title+'</a>'
   ).join('')+'</div>').join('');
-  const examples=active.examples.map(([english,russian])=>'<li><span lang="en">'+escapeText(english)
+  const examples=[...active.examples,...(aiExamples.get(active.id)??[])].map(([english,russian])=>'<li><span lang="en">'+escapeText(english)
     +'</span><span class="grammar-example-translation">'+escapeText(russian)+'</span></li>').join('');
   return head('Грамматика')+'<div class="grammar-layout"><aside class="panel grammar-index" aria-label="Темы грамматики">'+index
     +'</aside><div class="grammar-area"><label class="grammar-topic-select">Тема<select id="grammar-page-topic">'+topicOptions(active.id)
     +'</select></label><article class="panel grammar-content"><h3>'+active.title+'</h3><p class="meta">'+active.level
     +'</p><p class="grammar-rule">'+escapeText(active.rule)+'</p><ul class="grammar-examples">'+examples+'</ul>'
-    +btn('practice-topic','Упражнения по теме','primary grammar-practice',active.id)+'</article></div></div>';
+    +btn('practice-topic','Упражнения по теме','primary grammar-practice',active.id)
+    +aiButton('examples','Ещё примеры · ИИ')+'</article></div></div>';
 }
 function contextControls(w,s){
-  if(!w.contexts)return '';
-  return '<div class="contexts" role="group" aria-label="Контекст фразы">'+w.contexts.map((_,index)=>{
+  if(!w.contexts&&!aiEnabled&&!s.aiContexts?.[w.id])return '';
+  const contexts=w.contexts?w.contexts.map((_,index)=>[index,contextLabel(index)]):[[0,'Исходный пример']];
+  if(s.aiContexts?.[w.id])contexts.push(['ai','Пример от ИИ']);
+  const buttons=w.contexts||s.aiContexts?.[w.id]?contexts.map(([index,label])=>{
     const active=contextIndex(w,s)===index;
-    return '<button class="quietbtn" data-act="context" data-val="'+index+'" aria-pressed="'+active+'">'+contextLabel(index)+'</button>';
-  }).join('')+'</div>';
+    return '<button class="quietbtn" data-act="context" data-val="'+index+'" aria-pressed="'+active+'">'+label+'</button>';
+  }).join(''):'';
+  return '<div class="contexts" role="group" aria-label="Контекст фразы">'+buttons+aiButton('context','Новый контекст · ИИ')+'</div>';
 }
 function entryContexts(w){
   return (w.contexts??[w]).map((context,index)=>'<div class="entry-context">'
@@ -162,13 +177,13 @@ function trainingCard(s,w){
   }).join('');
   const feedback=answered?'<div class="feedback" role="status"><b>'
     +(val===0?'Верно!':val===-1?'Карточка пропущена.':'Верный перевод — '+(reverse?'<span lang="en">'+correct+'</span>':correct)+'.')
-    +'</b>'+(reverse?'<p lang="en">'+marked(context.sentence,true)+'</p>':'<span>'+context.translation+'</span>')
+    +'</b>'+(reverse?'<p lang="en">'+marked(context.sentence,true)+'</p>':'<span>'+escapeText(context.translation)+'</span>')
     +(!reverse&&w.hint?'<small>'+w.hint+'</small>':'')+'</div>':'';
   const hasHint=!reverse&&w.hint;
   const actions=answered?'<span class="meta">'+w.word+' · '+w.right+'</span>'+btn('next',s.pos+1===s.ids.length?'Итоги':'Дальше','primary')
     :(hasHint?btn('hint',icon('bulb')+(hint?'Скрыть подсказку':'Подсказка'),'textbtn'):'<span></span>')
       +btn('skip','Пропустить '+icon('skip'),'textbtn');
-  const prompt=reverse?'<b class="reverse-meaning">'+w.right+'</b><p>'+context.translation+'</p>'
+  const prompt=reverse?'<b class="reverse-meaning">'+w.right+'</b><p>'+escapeText(context.translation)+'</p>'
     :'<span class="quote" aria-hidden="true">“</span><p class="phrase" lang="en">'+marked(context.sentence,answered)+'</p>';
   const question=reverse?'Выбери перевод на английский.':'Как переводится выделенное слово'+(w.word.includes(' ')?'сочетание':'')+'?';
   return '<section class="panel exercise"><div class="cardtop"><span class="counter"><strong>'+w.level+'</strong> Карточка '
@@ -193,17 +208,17 @@ function gapCard(s,exercise){
     :'<form class="answer-form" id="gap-answer-form"><input class="answer-input" name="answer" type="text" lang="en"'
     +' aria-label="Ответ на английском" autocapitalize="off" autocomplete="off" spellcheck="false" maxlength="120" required>'
     +'<button type="submit" class="primary">Проверить</button></form>';
-  const actions=answered?'<span></span>'+btn('next',s.pos+1===s.ids.length?'Итоги':'Дальше','primary')
-    :'<span></span>'+btn('skip','Пропустить '+icon('skip'),'textbtn');
+  const next=answered?btn('next',s.pos+1===s.ids.length?'Итоги':'Дальше','primary'):btn('skip','Пропустить '+icon('skip'),'textbtn');
+  const actions=(aiButton('gap','Новый пропуск · ИИ')||'<span></span>')+next;
   return '<section class="panel exercise"><div class="cardtop"><span class="counter"><strong>'+topic.level
-    +'</strong> Карточка '+(s.pos+1)+' / '+s.ids.length+'</span><span class="meta">'+topic.title+'</span></div>'
+    +'</strong> Карточка '+(s.pos+1)+' / '+s.ids.length+'</span><span class="meta">'+topic.title+(exercise.topicId?' · ИИ':'')+'</span></div>'
     +'<div class="prompt"><p class="phrase" lang="en">'+phrase+'</p></div>'
     +'<h3 class="ask">Заполни пропуск <span class="gap-cue" lang="en">'+escapeText(cue)+'</span></h3>'
     +response+'<div class="actions">'+actions+'</div></section>';
 }
 function training(s){
   const gap=state.mode==='gap';
-  const item=(gap?gapBank:bank).get(s.ids[s.pos]);
+  const item=gap?currentGap(s):bank.get(s.ids[s.pos]);
   let card;
   if(item){
     card=gap?gapCard(s,item):trainingCard(s,item);
@@ -280,9 +295,64 @@ function answer(n,response){
   filtersOpen=false;
   writeState();
   render();
-  if(phoneLayout.matches)view.querySelector('[data-act="next"]').scrollIntoView({block:'nearest'});
+  if(phoneLayout.matches)view.querySelector('[data-act="next"]')?.scrollIntoView({block:'nearest'});
+}
+async function generate(kind){
+  if(!aiEnabled||aiPending)return;
+  const inRules=kind==='examples';
+  const s=inRules?null:session();
+  const cardId=s?.ids[s.pos];
+  const originalPage=location.hash, originalMode=state.mode;
+  const id=inRules?(topicsById.get(route()[1])??grammarTopics[0]).id
+    :kind==='gap'?currentGap(s)?.topic.id:cardId;
+  if(!id)return;
+  if(kind==='gap'&&Object.keys(s.aiGaps??{}).length>=10){
+    note('В этой подборке уже десять заданий от ИИ. Открой новую подборку для продолжения.');
+    return;
+  }
+  aiPending=true;
+  const setButtonsBusy=busy=>view.querySelectorAll('[data-act="ai"]').forEach(button=>{
+    button.disabled=busy;
+    button.setAttribute('aria-busy',String(busy));
+    button.textContent=busy?'Генерация…':button.dataset.label;
+  });
+  setButtonsBusy(true);
+  let updated=false;
+  try{
+    const response=await fetch('/api/generate',{
+      method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({kind,id})
+    });
+    const data=await response.json();
+    if(!response.ok){
+      note(data.error??'Генерация не удалась.');
+      return;
+    }
+    if(location.hash!==originalPage||(!inRules&&(state.mode!==originalMode||session()!==s||s.ids[s.pos]!==cardId)))return;
+    if(inRules){
+      aiExamples.set(id,data.examples);
+    }else if(kind==='context'){
+      (s.aiContexts??={})[cardId]=data;
+      (s.contexts??={})[cardId]='ai';
+    }else{
+      const exerciseId='ai-gap-'+crypto.randomUUID();
+      (s.aiGaps??={})[exerciseId]={...data,topicId:id};
+      if(s.answers[cardId]!==undefined)s.pos++;
+      s.ids.splice(s.pos,0,exerciseId);
+    }
+    writeState();
+    updated=true;
+  }catch{
+    note('Генерация не удалась. Попробуй ещё раз.');
+  }finally{
+    aiPending=false;
+    if(updated){
+      render();
+      if(kind==='gap'&&phoneLayout.matches)view.querySelector('.exercise')?.scrollIntoView({block:'start'});
+    }else setButtonsBusy(false);
+  }
 }
 function action(a,val){if(a==='sound'){const w=bank.get(val);speak(page()==='practice'?currentContext(w,session()):w.contexts?.[0]??w);return}
+if(a==='ai'){void generate(val);return}
 if(a==='filters'){
   filtersOpen=!filtersOpen;
   view.querySelector('#practice-controls').classList.toggle('is-open',filtersOpen);
@@ -290,8 +360,8 @@ if(a==='filters'){
   return;
 }
 if(a==='context'){
-  const s=session(),w=bank.get(s.ids[s.pos]),index=Number(val);
-  if(!w?.contexts?.[index])return;
+  const s=session(),w=bank.get(s.ids[s.pos]),index=val==='ai'?val:Number(val);
+  if(!w||(index==='ai'?!s.aiContexts?.[w.id]:!(w.contexts??[w])[index]))return;
   (s.contexts??={})[w.id]=index;
   writeState();
   render();
@@ -336,7 +406,13 @@ if(a==='reviewSaved'){
   hint=false;
   location.hash='practice';
 }
-if(a==='mistakes'){const s=session();state.review=build(shuffle(s.ids.filter(id=>s.answers[id]!==0)));hint=false}
+if(a==='mistakes'){
+  const s=session();
+  state.review=build(shuffle(s.ids.filter(id=>s.answers[id]!==0)));
+  if(s.aiGaps)state.review.aiGaps=s.aiGaps;
+  if(s.aiContexts)state.review.aiContexts=s.aiContexts;
+  hint=false;
+}
 writeState();render();
 if(a==='next'&&phoneLayout.matches){
   const card=view.querySelector('.exercise, .finish');
@@ -367,7 +443,7 @@ view.addEventListener('submit',e=>{
     input.focus();
     return;
   }
-  const s=session(),exercise=gapBank.get(s.ids[s.pos]);
+  const exercise=currentGap(session());
   if(!exercise)return;
   answer(exercise.answers.some(expected=>normalizeAnswer(expected)===normalized)?0:1,response);
   view.querySelector('[data-act="next"]')?.focus({preventScroll:true});
