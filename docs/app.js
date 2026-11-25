@@ -70,7 +70,15 @@ function marked(s,answered){
 }
 const day=()=>{const d=new Date();return [d.getFullYear(),d.getMonth()+1,d.getDate()].join('-')};
 const page=()=>['stats','dictionary'].includes(location.hash.slice(1))?location.hash.slice(1):'practice';
-const view=document.getElementById('view');let hint=false,q='',timer;
+const view=document.getElementById('view');
+const glossBubble=document.createElement('div');
+glossBubble.id='word-translation';
+glossBubble.className='gloss-bubble';
+glossBubble.setAttribute('role','tooltip');
+glossBubble.setAttribute('lang','ru');
+glossBubble.hidden=true;
+document.body.append(glossBubble);
+let hint=false,q='',timer,activeGloss;
 function note(msg){const e=document.getElementById('notice');e.textContent=msg;e.classList.add('show');clearTimeout(timer);timer=setTimeout(()=>e.classList.remove('show'),2800)}
 function speak(context){if(!('speechSynthesis'in window)){note('Этот браузер не поддерживает озвучку.');return}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(cleared(context.sentence));u.lang='en-US';u.rate=.9;const v=speechSynthesis.getVoices().find(v=>/^en[-_]/i.test(v.lang));if(v)u.voice=v;u.onerror=e=>{if(!['canceled','interrupted'].includes(e.error))note('Английская озвучка сейчас недоступна в браузере.')};speechSynthesis.speak(u)}
 const btn=(action,label,cls='quietbtn',val='')=>'<button class="'+cls+'" data-act="'+action+'" data-val="'+val+'">'+label+'</button>';
@@ -118,7 +126,7 @@ function trainingCard(s,w){
     +(s.pos+1)+' / '+s.ids.length+'</span><div class="tools">'+iconBtn('sound',id,'Прослушать фразу','volume')
     +iconBtn('save',id,saved?'Убрать из словаря':'Сохранить в словарь','save',saved)+'</div></div>'+contextControls(w,s)
     +'<div class="prompt"><span class="quote" aria-hidden="true">“</span><p class="phrase" lang="en">'+marked(context.sentence,answered)
-    +'</p><div class="glossnote" role="status" lang="ru">'+glossPrompt+'</div></div>'
+    +'</p><div class="glossnote">'+glossPrompt+'</div></div>'
     +'<h3 class="ask">Как переводится выделенное слово'+(w.word.includes(' ')?'сочетание':'')+'?</h3>'
     +'<div class="choices">'+choices+'</div>'+feedback+(w.hint&&hint&&!answered?'<p class="hint">'+w.hint+'</p>':'')
     +'<div class="actions">'+actions+'</div></section>';
@@ -144,6 +152,7 @@ function dictionary(){return head('Мой словарь',state.saved.length?btn
 function statistics(){const data=Object.values(state.records),n=data.reduce((a,r)=>a+r.n,0),ok=data.reduce((a,r)=>a+r.ok,0);return head('Твой прогресс')+'<div class="statsgrid">'+[['Ответов',n],['Точность',n?Math.round(100*ok/n)+'%':'—'],['Дней практики',Object.keys(state.days).length]].map(([label,val])=>'<div class="panel sidebox"><span class="meta">'+label+'</span><strong>'+val+'</strong></div>').join('')+'</div><div class="panel sidebox statslevels"><h3>Практика по разделам</h3><p class="desc">Сколько разных карточек ты уже разобрал.</p>'+[...levels,gameCollection].map(l=>{const pool=cardsAtLevel(l),seen=pool.filter(w=>state.records[w.id]).length;return '<div class="levelstat'+(l===gameCollection?' game-stat':'')+'"><b>'+l+'</b>'+bar(100*seen/pool.length)+'<span>'+seen+' / '+pool.length+'</span></div>'}).join('')+'</div>'}
 let lastTraining;
 function render(){
+  closeGloss();
   const p=page();
   document.querySelectorAll('[data-nav]').forEach(a=>{
     a.classList.toggle('active',a.dataset.nav===p);
@@ -201,22 +210,50 @@ document.addEventListener('keydown',e=>{if(e.ctrlKey||e.altKey||e.metaKey||e.rep
 render();
 
 function closeGloss(){
-  const active=view.querySelector('.lookup.chosen');
-  if(!active)return;
-  active.classList.remove('chosen');
-  active.setAttribute('aria-pressed','false');
-  view.querySelector('.glossnote').textContent=glossPrompt;
+  if(!activeGloss)return;
+  activeGloss.classList.remove('chosen');
+  activeGloss.setAttribute('aria-pressed','false');
+  activeGloss.removeAttribute('aria-describedby');
+  glossBubble.hidden=true;
+  activeGloss=null;
+}
+function positionGloss(){
+  if(!activeGloss)return;
+  const anchor=activeGloss.getBoundingClientRect();
+  const {clientWidth,clientHeight}=document.documentElement;
+  if(anchor.bottom<=0||anchor.top>=clientHeight){
+    closeGloss();
+    return;
+  }
+  const {width,height}=glossBubble.getBoundingClientRect();
+  const gap=9, margin=8, center=anchor.left+anchor.width/2;
+  const left=Math.max(margin,Math.min(center-width/2,clientWidth-width-margin));
+  const fitsAbove=anchor.top>=height+gap+margin;
+  const above=fitsAbove||anchor.top>clientHeight-anchor.bottom;
+  const top=above?anchor.top-height-gap:anchor.bottom+gap;
+  glossBubble.style.left=left+'px';
+  glossBubble.style.top=Math.max(margin,Math.min(top,clientHeight-height-margin))+'px';
+  glossBubble.style.setProperty('--arrow-x',Math.max(10,Math.min(width-10,center-left))+'px');
+  glossBubble.classList.toggle('below-word',!above);
 }
 document.addEventListener('click',e=>{
   const button=e.target.closest('.lookup');
-  const wasActive=button?.classList.contains('chosen');
+  const wasActive=button===activeGloss;
   closeGloss();
   if(!button||wasActive)return;
   const s=session(),w=bank.get(s.ids[s.pos]);
   const translations=currentContext(w,s).glosses??glosses[w.sentence];
+  activeGloss=button;
+  glossBubble.textContent=button.dataset.gloss==='target'?w.right:translations[Number(button.dataset.gloss)];
+  glossBubble.hidden=false;
+  positionGloss();
+  if(!activeGloss)return;
   button.classList.add('chosen');
   button.setAttribute('aria-pressed','true');
-  view.querySelector('.glossnote').textContent=button.dataset.gloss==='target'?w.right:translations[Number(button.dataset.gloss)];
+  button.setAttribute('aria-describedby',glossBubble.id);
 });
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeGloss()});
+view.addEventListener('focusout',e=>{if(e.target===activeGloss)closeGloss()});
+window.addEventListener('scroll',positionGloss,{passive:true});
+window.addEventListener('resize',positionGloss);
 
