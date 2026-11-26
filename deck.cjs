@@ -31,7 +31,8 @@ function deckSpec(body, cards) {
       + '"translation":"Russian sentence","right":"Russian meaning of headword in context","glosses":["one Russian gloss per surrounding English token"],'
       + '"wrongRu":["three plausible but strictly wrong Russian meanings"],"wrongRuEn":["English translation for each wrongRu in the same order"],'
       + '"wrongEn":["three plausible but strictly wrong English words"],"wrongEnRu":["Russian translation for each wrongEn in the same order"]}]}. '
-      + 'Keep sentences short (5–11 words), split hyphenated words for glosses, count contractions as one word and include articles. '
+      + (body.sentenceStyle === 'complex' ? 'Use longer, more complex sentences (about 14–24 words), appropriate to the selected level. ' : 'Keep sentences short (5–11 words). ')
+      + 'Split hyphenated words for glosses, count contractions as one word and include articles. '
       + 'Do not repeat the target outside brackets, use synonyms as wrong answers, or make multiple correct choices. '
       + 'Use plain text, ASCII letters for English words, and straight apostrophes.',
     input: {

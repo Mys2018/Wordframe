@@ -5,7 +5,7 @@ const equal=(a,b)=>{const x=Buffer.from(a),y=Buffer.from(b);return x.length===y.
 function accounts({file,secure=true,encryptionKey}) {
  const secretKey=typeof encryptionKey==='string'&&/^[a-f0-9]{64}$/i.test(encryptionKey)?Buffer.from(encryptionKey,'hex'):null;
  const db=new DatabaseSync(file);
- db.exec('PRAGMA journal_mode=WAL; CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT UNIQUE NOT NULL, salt TEXT NOT NULL, hash TEXT NOT NULL, progress TEXT); CREATE TABLE IF NOT EXISTS sessions (token TEXT PRIMARY KEY, user_id INTEGER NOT NULL, expires INTEGER NOT NULL); CREATE TABLE IF NOT EXISTS ai_quota (user_id INTEGER PRIMARY KEY, started INTEGER NOT NULL, used INTEGER NOT NULL); CREATE TABLE IF NOT EXISTS ai_credentials (user_id INTEGER PRIMARY KEY, source TEXT NOT NULL, iv TEXT, tag TEXT, ciphertext TEXT);');
+ db.exec('PRAGMA journal_mode=WAL; CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT UNIQUE NOT NULL, salt TEXT NOT NULL, hash TEXT NOT NULL, progress TEXT); CREATE TABLE IF NOT EXISTS sessions (token TEXT PRIMARY KEY, user_id INTEGER NOT NULL, expires INTEGER NOT NULL); CREATE TABLE IF NOT EXISTS ai_quota (user_id INTEGER PRIMARY KEY, started INTEGER NOT NULL, used INTEGER NOT NULL); CREATE TABLE IF NOT EXISTS ai_credentials (user_id INTEGER PRIMARY KEY, source TEXT NOT NULL, iv TEXT, tag TEXT, ciphertext TEXT); CREATE TABLE IF NOT EXISTS ai_preferences (user_id INTEGER PRIMARY KEY, model TEXT NOT NULL);');
  const attempts=new Map();
  const json=(res,status,data,cookie)=>{res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store',...(cookie?{'Set-Cookie':cookie}:{})});res.end(JSON.stringify(data));};
  const session=req=>{const token=(req.headers.cookie??'').match(/(?:^|;\s*)wf_session=([a-f0-9]{64})(?:;|$)/)?.[1];return token?db.prepare('SELECT users.id,users.name,users.progress FROM sessions JOIN users ON users.id=sessions.user_id WHERE sessions.token=? AND sessions.expires>?').get(digest(token),Date.now()):undefined};
@@ -33,20 +33,22 @@ function accounts({file,secure=true,encryptionKey}) {
  }
  function aiSettings(userId){
   const row=db.prepare('SELECT source,iv,tag,ciphertext FROM ai_credentials WHERE user_id=?').get(userId);
-  if(!row)return {source:'shared',key:undefined};
-  if(!row.ciphertext)return {source:row.source,key:undefined};
+  const model=db.prepare('SELECT model FROM ai_preferences WHERE user_id=?').get(userId)?.model;
+  if(!row)return {source:'shared',key:undefined,model};
+  if(!row.ciphertext)return {source:row.source,key:undefined,model};
   if(!secretKey)throw Error('Ключ шифрования сервера не настроен.');
   const decipher=createDecipheriv('aes-256-gcm',secretKey,Buffer.from(row.iv,'hex'));
   decipher.setAAD(Buffer.from(String(userId)));decipher.setAuthTag(Buffer.from(row.tag,'hex'));
   const key=Buffer.concat([decipher.update(Buffer.from(row.ciphertext,'hex')),decipher.final()]).toString('utf8');
-  return {source:row.source,key};
+  return {source:row.source,key,model};
  }
- function saveAiSettings(userId,source,key){
+ function saveAiSettings(userId,source,key,model){
   let row=db.prepare('SELECT iv,tag,ciphertext FROM ai_credentials WHERE user_id=?').get(userId)||{};
   if(key){if(!secretKey)throw Error('Ключ шифрования сервера не настроен.');
    const iv=randomBytes(12),cipher=createCipheriv('aes-256-gcm',secretKey,iv);cipher.setAAD(Buffer.from(String(userId)));
    const encrypted=Buffer.concat([cipher.update(key,'utf8'),cipher.final()]);row={iv:iv.toString('hex'),tag:cipher.getAuthTag().toString('hex'),ciphertext:encrypted.toString('hex')};}
   db.prepare('INSERT INTO ai_credentials(user_id,source,iv,tag,ciphertext) VALUES (?,?,?,?,?) ON CONFLICT(user_id) DO UPDATE SET source=excluded.source,iv=excluded.iv,tag=excluded.tag,ciphertext=excluded.ciphertext').run(userId,source,row.iv??null,row.tag??null,row.ciphertext??null);
+  if(model)db.prepare('INSERT INTO ai_preferences(user_id,model) VALUES (?,?) ON CONFLICT(user_id) DO UPDATE SET model=excluded.model').run(userId,model);
  }
  function quota(userId,amount=0,now=Date.now()) {
   const limit=500,windowMs=5*60*60*1000;

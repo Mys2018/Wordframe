@@ -8,7 +8,7 @@ const { gapBatchSpec } = require('./gap-batch.cjs');
 
 const provider = 'https://plusvibeapi.ru/v1';
 const terra = 'gpt-6.1-terra';
-const models = [{ id: terra, label: 'GPT-6.1 Terra' }];
+const models = [{ id: terra, label: 'GPT-6.1 Terra' }, { id: 'gpt-6-luna', label: 'GPT-6 Luna' }, { id: 'deepseek-v4.1-flash-1017', label: 'DeepSeek V4.1 Flash 1017' }];
 const allowedModel = id => models.some(model => model.id === id);
 const dist = join(__dirname, 'dist');
 const assets = new Map([
@@ -138,7 +138,7 @@ function wordframeServer({ apiKey, password, token, model = terra, localSettings
     const account = accountStore?.session(req);
     if (accountStore && (path === '/api/generate' || path.startsWith('/api/settings')) && !account) return reply(res,401,{error:'Войди в аккаунт.'});
     let personal;
-    try { personal = account ? {...accountStore.aiSettings(account.id),model} : null; }
+    try { personal = account ? accountStore.aiSettings(account.id) : null; if (personal && !allowedModel(personal.model)) personal.model = model; }
     catch { return reply(res,500,{error:'Не удалось прочитать настройки ключа. Обратись к владельцу сервера.'}); }
     const currentSettings = () => personal ? {configured:Boolean(personal.source==='personal'?personal.key:activeKey),keySource:personal.source,model:personal.model,models,quota:personal.source==='personal'?null:accountStore.quota(account.id)} : settings();
     if ((localSettings || accountStore) && req.method === 'GET' && path === '/api/settings') return reply(res, 200, currentSettings());
@@ -185,7 +185,7 @@ function wordframeServer({ apiKey, password, token, model = terra, localSettings
       if (personal) {
         if (!['shared','personal'].includes(body.keySource)) return reply(res,400,{error:'Выбери общий или свой ключ.'});
         if (body.keySource==='personal' && !body.apiKey && !personal.key) return reply(res,400,{error:'Введи свой ключ PlusVibe.'});
-        try { accountStore.saveAiSettings(account.id,body.keySource,body.apiKey); }
+        try { accountStore.saveAiSettings(account.id,body.keySource,body.apiKey,body.model); }
         catch { return reply(res,500,{error:'Не удалось сохранить ключ. Обратись к владельцу сервера.'}); }
         if (body.apiKey) personal.key = body.apiKey; personal.source = body.keySource; personal.model = body.model;
       }
@@ -197,6 +197,7 @@ function wordframeServer({ apiKey, password, token, model = terra, localSettings
     if (!requestKey) return reply(res, 503, { error: 'Добавь ключ PlusVibe в настройках Wordframe.' });
     const chosenModel = testModel ? body?.model : (personal ? personal.model : activeModel);
     if (!allowedModel(chosenModel)) return reply(res, 400, { error: 'Неизвестная модель Wordframe.' });
+    if (!testModel && body.sentenceStyle !== undefined && !['standard','complex'].includes(body.sentenceStyle)) return reply(res,400,{error:'Неизвестный формат предложений.'});
     const deckBatch = !testModel && body?.kind === 'deck';
     const gapBatch = !testModel && body?.kind === 'gap-batch';
     const batch = deckBatch || gapBatch;
@@ -212,11 +213,11 @@ function wordframeServer({ apiKey, password, token, model = terra, localSettings
     busy = true;
     try {
       const useMessages = false;
-      const system = 'You write clear English-learning material for Russian speakers. Return only raw JSON, without Markdown. ' + spec.instruction;
+      const system = 'You write clear English-learning material for Russian speakers. Return only raw JSON, without Markdown. ' + spec.instruction + (!testModel && body.sentenceStyle === 'complex' ? ' Make each English sentence longer and structurally richer, around 14–24 words, with natural detail or a subordinate clause, while respecting the selected level or grammar topic. Stay within the response field length limits.' : '');
       const user = { role: 'user', content: JSON.stringify(spec.input) };
       const payload = useMessages
-        ? { model: chosenModel, max_tokens: batch ? Math.min(16000, 1500 + (body.count ?? 6) * 650) : 950, system, thinking: { type: 'disabled' }, messages: [user] }
-        : { model: chosenModel, max_tokens: batch ? Math.min(16000, 1500 + (body.count ?? 6) * 650) : 950, response_format: { type: 'json_object' }, messages: [{ role: 'system', content: system }, user] };
+        ? { model: chosenModel, max_tokens: batch ? Math.min(22000, (body.sentenceStyle === 'complex' ? 2000 + (body.count ?? 6) * 900 : 1500 + (body.count ?? 6) * 650)) : 950, system, thinking: { type: 'disabled' }, messages: [user] }
+        : { model: chosenModel, max_tokens: batch ? Math.min(22000, (body.sentenceStyle === 'complex' ? 2000 + (body.count ?? 6) * 900 : 1500 + (body.count ?? 6) * 650)) : 950, response_format: { type: 'json_object' }, messages: [{ role: 'system', content: system }, user] };
       const headers = useMessages ? { 'x-api-key': requestKey, 'anthropic-version': '2023-06-01' }
         : { Authorization: 'Bearer ' + requestKey };
       const upstream = await request(provider + (useMessages ? '/messages' : '/chat/completions'), {

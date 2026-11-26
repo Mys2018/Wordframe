@@ -18,6 +18,13 @@ if(document.querySelector('meta[name="wordframe-accounts"]')){
   const exit=document.createElement('button');exit.className='account-logout nav-icon';exit.setAttribute('aria-label','Выйти из аккаунта '+account.name);exit.title='Выйти из аккаунта';exit.innerHTML='<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10 17v3H4V4h6v3M14 8l4 4-4 4M8 12h10"/></svg><span class="nav-icon-label">Выйти</span>'; exit.onclick=async()=>{await fetch('/api/account/logout',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});location.reload()};document.querySelector('#main-nav').append(exit);
 }
 const paths={
+sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/>',
+moon:'<path d="M20.9 13a8.5 8.5 0 0 1-9.9-9.9A8.5 8.5 0 1 0 20.9 13Z"/>',
+arrow:'<path d="M5 12h14m-5-5 5 5-5 5"/>',
+cards:'<rect x="6" y="4" width="14" height="17" rx="2"/><path d="M3 7v12a2 2 0 0 0 2 2h11"/>',
+translate:'<path d="M3 5h12M9 3v2c0 5-2 8-6 10m2-6c1 3 4 5 8 6m2 5 3-8 3 8m-5-2h4"/>',
+pencil:'<path d="m4 20 4-.8L19 8a2 2 0 0 0-3-3L5 16l-1 4ZM14 7l3 3"/>',
+infinity:'<path d="M12 12c-2.5-4-4-5-6-5a4 4 0 0 0 0 8c2 0 3.5-1 6-5m0 2c2.5 4 4 5 6 5a4 4 0 0 0 0-8c-2 0-3.5 1-6 5"/>',
 spark:'<path d="m12 3 1.7 5.3L19 10l-5.3 1.7L12 17l-1.7-5.3L5 10l5.3-1.7L12 3ZM19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15Z"/>',
 settings:'<path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8ZM19.4 15l1 1.8-2.2 2.2-1.8-1a8.3 8.3 0 0 1-1.9.8l-.6 2H10l-.6-2a8.3 8.3 0 0 1-1.9-.8l-1.8 1-2.2-2.2 1-1.8a8.3 8.3 0 0 1-.8-1.9l-2-.6v-3l2-.6a8.3 8.3 0 0 1 .8-1.9l-1-1.8L5.7 3l1.8 1a8.3 8.3 0 0 1 1.9-.8l.6-2h3.8l.6 2a8.3 8.3 0 0 1 1.9.8l1.8-1 2.2 2.2-1 1.8a8.3 8.3 0 0 1 .8 1.9l2 .6v3l-2 .6a8.3 8.3 0 0 1-.8 1.9Z"/>',
 layers:'<path d="m3 8 9-5 9 5-9 5zM3 12l9 5 9-5M3 16l9 5 9-5"/>',
@@ -38,7 +45,7 @@ for(const topic of grammarTopics){
   topicsByGroup.get(topic.group).push(topic);
 }
 const gapBank=new Map(grammarTopics.flatMap(topic=>topic.exercises.map(exercise=>[exercise.id,{...exercise,topic}])));
-const modeLabels=new Map([['en-ru','EN → RU'],['ru-en','RU → EN'],['gap','Пропуски']]);
+const modeLabels=new Map([['en-ru',icon('translate')+' EN → RU'],['ru-en',icon('translate')+' RU → EN'],['gap',icon('pencil')+' Пропуски'],['flash',icon('cards')+' Карточки']]);
 const mixedTopics='all-topics';
 const gameCollection='Casualties Unknown', allLevels='all-levels', allParts='all';
 const levels=[...Object.keys(source),'C1'], key=account?'wf-english-v1:user:'+account.id:'wf-english-v1';
@@ -50,7 +57,8 @@ const partLabels=new Map([
 let state;if(account&&remoteProgress){state=remoteProgress;try{if(localStorage.getItem(key+':pending')&&confirm('Есть несохранённые на сервере изменения с этого устройства. Использовать их вместо серверного прогресса?'))state=JSON.parse(localStorage.getItem(key))||state}catch{}}else try{state=JSON.parse(localStorage.getItem(key))}catch{}
 if(account&&!state&&!remoteProgress){try{const old=localStorage.getItem('wf-english-v1');if(old&&confirm('Перенести сохранённый в этом браузере прогресс в аккаунт?'))state=JSON.parse(old)}catch{}}
 state=Object.assign({level:'A2',part:allParts,mode:'en-ru',gapTopic:mixedTopics,saved:[],sessions:{},records:{},days:{},review:null,
-  aiCards:[],aiDeckIds:[],activeAiDeck:false,gapCount:6},state||{});
+  aiCards:[],aiDeckIds:[],activeAiDeck:false,gapCount:6,infinite:false,sentenceStyle:'standard'},state||{});
+if(!['standard','complex'].includes(state.sentenceStyle))state.sentenceStyle='standard';
 if(!Array.isArray(state.aiGapHistory))state.aiGapHistory=[];
 if(!Number.isInteger(state.gapCount)||state.gapCount<1||state.gapCount>20)state.gapCount=6;
 for(const card of state.aiCards)bank.set(card.id,card);
@@ -78,7 +86,7 @@ function workoutKey(){
   if(state.mode==='gap')return (state.activeAiDeck?'ai-gap:':'gap:')+state.gapTopic;
   if(state.activeAiDeck)return 'ai-deck:'+state.mode;
   const selection=state.part===allParts?state.level:state.level+':'+state.part;
-  return state.mode==='en-ru'?selection:'ru-en:'+selection;
+  return state.mode==='en-ru'?selection:state.mode+':'+selection;
 }
 function newWorkout(){
   const items=state.mode==='gap'
@@ -195,7 +203,7 @@ document.body.append(glossBubble);
 let hint=false,gapRuleOpen=false,q='',timer,activeGloss,filtersOpen=false;
 function note(msg){const e=document.getElementById('notice');e.textContent=msg;e.classList.add('show');clearTimeout(timer);timer=setTimeout(()=>e.classList.remove('show'),2800)}
 function speak(context){if(!('speechSynthesis'in window)){note('Этот браузер не поддерживает озвучку.');return}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(cleared(context.sentence));u.lang='en-US';u.rate=.9;const v=speechSynthesis.getVoices().find(v=>/^en[-_]/i.test(v.lang));if(v)u.voice=v;u.onerror=e=>{if(!['canceled','interrupted'].includes(e.error))note('Английская озвучка сейчас недоступна в браузере.')};speechSynthesis.speak(u)}
-const btn=(action,label,cls='quietbtn',val='')=>'<button class="'+cls+'" data-act="'+action+'" data-val="'+val+'">'+label+'</button>';
+const btn=(action,label,cls='quietbtn',val='')=>'<button class="'+cls+'" data-act="'+action+'" data-val="'+val+'">'+label+(action==='next'?icon('arrow'):'')+'</button>';
 function iconBtn(action,id,label,symbol,active=false){return '<button class="iconbtn '+(active?'saved':'')+'" data-act="'+action+'" data-val="'+id+'" aria-label="'+label+'" title="'+label+'" '+(action==='save'?'aria-pressed="'+active+'"':'')+'>'+icon(symbol)+'</button>'}
 function selectionButtons(labels,action,active,className=''){
   return [...labels].map(([value,label])=>'<button type="button" class="'+className+'" data-act="'+action+'" data-val="'+value
@@ -219,14 +227,15 @@ function practiceControls(){
 const head=(title,extra='')=>'<div class="rowhead"><h2>'+title+'</h2>'+extra+'</div>';
 const bar=n=>'<div class="meter"><b style="width:'+Math.min(100,n)+'%"></b></div>';
 const escapeText=value=>String(value).replace(/[&<>]/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[char]));
+function themeSettings(){return '<section class="panel theme-settings"><div class="theme-heading"><span class="theme-icon">'+icon('moon')+'</span><div><h3>Оформление</h3><p>Тема сохраняется на этом устройстве</p></div></div><div class="theme-switch" role="group" aria-label="Тема оформления">'+selectionButtons(new Map([['light',icon('sun')+' Светлая'],['dark',icon('moon')+' Тёмная']]),'theme',document.documentElement.dataset.theme||'light','quietbtn')+'</div></section>'}
 function settingsPage(){
-  if(!aiSettings)return head('Настройки')+'<div class="panel sidebox">'+escapeText(settingsMessage||'Загрузка…')
+  if(!aiSettings)return head('Настройки')+themeSettings()+'<div class="panel sidebox">'+escapeText(settingsMessage||'Загрузка…')
     +(settingsMessage?' '+btn('settings-retry','Повторить'):'')+'</div>';
   const status=quotaCapable?(aiSettings.keySource==='personal'?'Используется твой ключ.':'Используется общий ключ.'):(aiSettings.configured?'Ключ сохранён для текущего запуска.':'Ключ пока не добавлен.');
   const options=aiSettings.models.map(model=>'<option value="'+model.id+'"'+(model.id===aiSettings.model?' selected':'')+'>'+escapeText(model.label)+'</option>').join('');
   const results=[...modelTests.values()].map(result=>'<li><b>'+escapeText(result.label)+'</b><span>'
     +escapeText(result.status)+'</span>'+(result.sample?'<span lang="en">'+escapeText(result.sample)+'</span>':'')+'</li>').join('');
-  return head('Настройки')+'<section class="panel sidebox ai-settings"><h3>Генерация через PlusVibe</h3>'
+  return head('Настройки')+themeSettings()+'<section class="panel sidebox ai-settings"><h3 class="settings-title">'+icon('spark')+' Генерация через PlusVibe</h3>'
     +'<p>'+status+' Свой ключ хранится в зашифрованном виде на сервере.</p>'
     +'<form id="ai-settings-form"><fieldset'+(settingsBusy?' disabled':'')+'>'
     +(quotaCapable?'<div class="key-options" role="group" aria-label="Ключ для ИИ"><label><input type="radio" name="keySource" value="shared"'+(aiSettings.keySource!=='personal'?' checked':'')+'> Общий ключ · до 500 карточек за 5 часов</label><label><input type="radio" name="keySource" value="personal"'+(aiSettings.keySource==='personal'?' checked':'')+'> Свой ключ · без общего лимита</label></div>':'')
@@ -235,7 +244,7 @@ function settingsPage(){
     +'<label>Модель<select name="model" class="answer-input">'+options+'</select></label>'
     +'<div class="settings-actions"><button class="primary" type="submit">Сохранить</button>'
     +'<button class="quietbtn" type="submit" name="test" value="both">Сохранить и проверить</button></div>'
-    +'<p class="desc">Проверка отправляет один запрос к GPT-6.1 Terra. При использовании общего ключа попытка расходует лимит.</p>'
+    +'<p class="desc">Проверка отправляет по одному запросу к каждой модели. При использовании общего ключа попытка расходует лимит.</p>'
     +'</fieldset></form><p role="status">'+escapeText(settingsMessage)+'</p>'
     +(results?'<ul class="settings-results" aria-live="polite">'+results+'</ul>':'')+'</section>';
 }
@@ -406,7 +415,7 @@ function trainingCard(s,w){
     +(val===0?'Верно!':val===-1?'Карточка пропущена.':'Верный перевод — '+(reverse?'<span lang="en">'+correct+'</span>':correct)+'.')
     +'</b>'+(reverse?'<p lang="en">'+marked(context.sentence,true)+'</p>':'<span>'+escapeText(context.translation)+'</span>')
     +(hasHint?'<small>'+w.hint+'</small>':'')+'</div>':'';
-  const actions=answered?'<span class="meta">'+w.word+' · '+w.right+'</span>'+btn('next',s.pos+1===s.ids.length?'Итоги':'Дальше','primary')
+  const actions=answered?'<span class="meta">'+w.word+' · '+w.right+'</span>'+btn('next',s.pos+1===s.ids.length&&(!state.infinite||state.review)?'Итоги':'Дальше','primary')
     :(hasHint?btn('hint',icon('bulb')+(hint?'Скрыть подсказку':'Подсказка'),'textbtn'):'<span></span>')
       +btn('skip','Пропустить '+icon('skip'),'textbtn');
   const prompt=reverse?'<b class="reverse-meaning">'+w.right+'</b><p>'+escapeText(context.translation)+'</p>'
@@ -454,7 +463,7 @@ function gapCard(s,exercise){
     +'<div class="gap-rule-head"><b>'+escapeText(topic.title)+'</b>'
     +'<a class="textbtn" href="#grammar/'+topic.id+'">Открыть в грамматике →</a></div>'
     +'<p>'+escapeText(topic.rule)+'</p></div>':'';
-  const next=answered?btn('next',s.pos+1===s.ids.length?'Итоги':'Дальше','primary'):btn('skip','Пропустить '+icon('skip'),'textbtn');
+  const next=answered?btn('next',s.pos+1===s.ids.length&&(!state.infinite||state.review)?'Итоги':'Дальше','primary'):btn('skip','Пропустить '+icon('skip'),'textbtn');
   const ruleBtn=topic?'<button type="button" class="textbtn" data-act="gap-rule" aria-expanded="'+gapRuleOpen+'">'+icon('book')+(gapRuleOpen?'Скрыть правило':'Правило')+'</button>':'';
   const aiBatchBtn=state.activeAiDeck?aiButton('gap','Новая подборка · ИИ',true):'';
   const actions='<div class="gap-actions-left">'+ruleBtn+aiBatchBtn+'</div>';
@@ -464,6 +473,15 @@ function gapCard(s,exercise){
     +'<h3 class="ask">Заполни пропуск <span class="gap-cue" lang="en">'+escapeText(cue)+'</span></h3>'
     +response+ruleBox+'<div class="actions">'+actions+next+'</div></section>';
 }
+function flashCard(s,w){
+  const saved=state.saved.includes(w.id),flipped=Boolean(s.flashFlipped);
+  return '<section class="panel exercise flash-exercise"><div class="cardtop"><span class="counter"><strong>'+escapeText(w.level)+'</strong> Карточка '+(s.pos+1)+' / '+s.ids.length+'</span><div class="tools">'
+    +iconBtn('sound',w.id,'Прослушать слово','volume')+iconBtn('save',w.id,saved?'Убрать из словаря':'Сохранить в словарь','save',saved)+'</div></div>'
+    +'<button type="button" class="flash-card'+(flipped?' is-flipped':'')+'" data-act="flip" aria-pressed="'+flipped+'" aria-label="'+(flipped?'Показать слово':'Показать перевод')+'"><span class="flash-inner">'
+    +'<span class="flash-face flash-front"><small>АНГЛИЙСКИЙ</small><strong lang="en">'+escapeText(w.word)+'</strong><span>Нажми, чтобы увидеть перевод</span></span>'
+    +'<span class="flash-face flash-back"><small>ПЕРЕВОД</small><strong lang="ru">'+escapeText(w.right)+'</strong><span>Нажми, чтобы вернуться</span></span></span></button>'
+    +'<div class="actions"><span class="meta">Переверни карточку</span>'+btn('next',s.pos+1===s.ids.length&&(!state.infinite||state.review)?'Итоги':'Дальше','primary')+'</div></section>';
+}
 function training(s){
   const gap=state.mode==='gap';
   const batch=!gap&&state.activeAiDeck&&!state.review;
@@ -471,7 +489,7 @@ function training(s){
   const item=gap?currentGap(s):bank.get(s.ids[s.pos]);
   let card;
   if(item){
-    card=gap?gapCard(s,item):trainingCard(s,item);
+    card=gap?gapCard(s,item):state.mode==='flash'?flashCard(s,item):trainingCard(s,item);
   }else if(!s.ids.length){
     card=generated?'<section class="panel finish"><h3>Создай новую подборку</h3><p>'
       +(gap?'Выбери тему и количество, затем создай подборку.':'Выбери уровень и часть речи, затем создай новые карточки.')+'</p>'
@@ -481,7 +499,7 @@ function training(s){
   }else{
     const good=s.ids.filter(id=>s.answers[id]===0).length;
     card='<section class="panel finish"><span class="tile">'+icon('check')+'</span><h3>Подборка пройдена</h3>'
-      +'<p>Верных ответов — '+good+' из '+s.ids.length+'.</p>'+(good<s.ids.length?btn('mistakes',icon('repeat')+' Повторить ошибки'):'')
+      +(state.mode==='flash'?'<p>Просмотрено карточек: '+s.ids.length+'.</p>':'<p>Верных ответов — '+good+' из '+s.ids.length+'.</p>'+(good<s.ids.length?btn('mistakes',icon('repeat')+' Повторить ошибки'):''))
       +(generated?aiButton(gap?'gap':'deck',gap?'Новые пропуски · ИИ':'Новая подборка · ИИ'):btn('new','Новая подборка','primary'))+'</section>';
   }
   const sourceControls=aiBatchCapable?'<div class="source-switch" role="group" aria-label="Источник заданий">'
@@ -492,7 +510,11 @@ function training(s){
   const controls=gap?'<div class="practice-controls"><label class="filter-select">Тема<select id="gap-topic"><option value="'+mixedTopics+'">Все темы</option>'
     +topicOptions(state.gapTopic)+'</select></label>'
     +'<label class="filter-select count-select" title="Размер следующей подборки">Карточек<input id="gap-count" type="number" min="1" max="20" step="1" value="'+state.gapCount+'" aria-label="Количество карточек в следующей подборке"></label></div>':practiceControls();
-  return head(state.review?'Повторение':batch?'Подборка от ИИ':'Тренировка',sourceControls)+'<div class="training-switches">'+modes+dailyGoal()+'</div>'+controls+'<div class="grid">'+card+'</div>';
+  const extras='<div class="training-options" role="group" aria-label="Настройки тренировки">'
+    +'<button type="button" data-act="infinite" aria-pressed="'+Boolean(state.infinite)+'" title="'+(state.activeAiDeck?'После каждой подборки ИИ создаст новую и спишет лимит':'Автоматически начинать следующую подборку')+'">'+icon('infinity')+' Бесконечно</button>'
+    +(state.activeAiDeck&&!state.review?'<button type="button" data-act="sentence-style" aria-pressed="'+(state.sentenceStyle==='complex')+'" title="Более длинные и сложные предложения для новых подборок ИИ">'+icon('pencil')+' Сложные предложения</button>':'')
+    +(state.infinite&&state.activeAiDeck&&!state.review?'<span class="training-options-note">Новые подборки ИИ расходуют лимит</span>':'')+'</div>';
+  return head(state.review?'Повторение':batch?'Подборка от ИИ':'Тренировка',sourceControls)+'<div class="training-switches">'+modes+dailyGoal()+'</div>'+controls+extras+'<div class="grid">'+card+'</div>';
 }
 function entries(){const items=state.saved.map(id=>bank.get(id)).filter(Boolean).filter(w=>(w.word+' '+w.right).toLowerCase().includes(q.toLowerCase().trim()));return items.length?items.map(w=>'<article class="panel entry"><div><small>'+w.level+'</small><div><b lang="en">'+w.word+'</b> · '+w.right+'</div>'+entryContexts(w)+'</div><div class="tools">'+iconBtn('sound',w.id,'Прослушать фразу','volume')+iconBtn('save',w.id,'Убрать из словаря','save',true)+'</div></article>').join(''):'<p class="panel empty">По этому запросу слов пока нет.</p>'}
 function dictionary(){return head('Мой словарь',state.saved.length?btn('reviewSaved','Повторить слова','primary'):'')+(state.saved.length?'<input id="search" class="search" aria-label="Поиск по словарю" placeholder="Найти слово или перевод"><div class="list" id="entries">'+entries()+'</div>':'<div class="panel empty"><span class="tile">'+icon('book')+'</span><h3>Здесь будут твои слова</h3><p>Нажми на закладку в карточке, чтобы сохранить слово вместе с примером.</p>'+btn('practice','К тренировке','primary')+'</div>')}
@@ -590,7 +612,7 @@ async function generateGapBatch(){
   let updated=false;
   try{
     const history=[...state.aiGapHistory,...Object.values(s.aiGaps??{}).map(item=>item.sentence)].filter(value=>typeof value==='string'&&value.length<=280).slice(-50);
-    const response=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({kind:'gap-batch',topic:originalTopic,count,history})});
+    const response=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({kind:'gap-batch',topic:originalTopic,count,history,sentenceStyle:state.sentenceStyle})});
     const data=await response.json();
     if(!response.ok){note(data.error??'Генерация не удалась.');return}
     if(location.hash!==originalPage||state.mode!=='gap'||!state.activeAiDeck||state.gapTopic!==originalTopic||session()!==s)return;
@@ -645,9 +667,9 @@ async function generate(kind,auto=false){
   try{
     const response=await fetch('/api/generate',{
       method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(batch?{
-        kind,level:levels.includes(state.level)?state.level:'B1',part:state.part,count:aiCount,
+        kind,level:levels.includes(state.level)?state.level:'B1',part:state.part,count:aiCount,sentenceStyle:state.sentenceStyle,
         history:state.aiCards.map(card=>[card.word,card.sentence])
-      }:{kind,id})
+      }:{kind,id,sentenceStyle:state.sentenceStyle})
     });
     const data=await response.json();
     void refreshQuota();
@@ -666,6 +688,7 @@ async function generate(kind,auto=false){
       state.aiDeckFilter={level:state.level,part:state.part};
       delete state.sessions['ai-deck:en-ru'];
       delete state.sessions['ai-deck:ru-en'];
+      delete state.sessions['ai-deck:flash'];
       state.activeAiDeck=true;
       state.review=null;
       filtersOpen=false;
@@ -697,8 +720,12 @@ async function generate(kind,auto=false){
     }
   }
 }
-function action(a,val){if(a==='sound'){const w=bank.get(val);speak(page()==='practice'?currentContext(w,session()):w.contexts?.[0]??w);return}
+function action(a,val){if(a==='sound'){const w=bank.get(val);speak(page()==='practice'&&state.mode==='flash'?{sentence:w.word}:page()==='practice'?currentContext(w,session()):w.contexts?.[0]??w);return}
 if(a==='ai'){void generate(val);return}
+if(a==='theme'&&['light','dark'].includes(val)){document.documentElement.dataset.theme=val;try{localStorage.setItem('wordframe-theme',val)}catch{}render();return}
+if(a==='sentence-style'){state.sentenceStyle=state.sentenceStyle==='complex'?'standard':'complex';writeState();render();return}
+if(a==='infinite'){state.infinite=!state.infinite;writeState();render();return}
+if(a==='flip'){const s=session();s.flashFlipped=!s.flashFlipped;const card=view.querySelector('.flash-card');card?.classList.toggle('is-flipped',s.flashFlipped);card?.setAttribute('aria-pressed',String(Boolean(s.flashFlipped)));card?.setAttribute('aria-label',s.flashFlipped?'Показать слово':'Показать перевод');writeState();return}
 if(a==='source'){
   if(val==='generated'&&!aiEnabled){
     if(aiLocal){location.hash='settings';return}
@@ -759,6 +786,7 @@ if(a==='level'||a==='part'||a==='mode'){
   if((a==='level'||a==='part')&&state.activeAiDeck){
     delete state.sessions['ai-deck:en-ru'];
     delete state.sessions['ai-deck:ru-en'];
+    delete state.sessions['ai-deck:flash'];
   }
   hint=false;
   gapRuleOpen=false;
@@ -782,7 +810,12 @@ if(a==='save'){const i=state.saved.indexOf(val);if(i<0)state.saved.unshift(val);
 if(a==='hint')hint=!hint;
 if(a==='gap-rule')gapRuleOpen=!gapRuleOpen;
 if(a==='dictionary'||a==='practice'){location.hash=a;return}
-if(a==='next'){const s=session();if(s.answers[s.ids[s.pos]]===undefined)return;s.pos++;hint=false;gapRuleOpen=false;filtersOpen=false}
+if(a==='next'){const s=session();if(state.mode!=='flash'&&s.answers[s.ids[s.pos]]===undefined)return;s.flashFlipped=false;s.pos++;hint=false;gapRuleOpen=false;filtersOpen=false;
+  if(s.pos>=s.ids.length&&state.infinite&&!state.review){
+    if(state.activeAiDeck){writeState();render();void generate(state.mode==='gap'?'gap':'deck');return}
+    state.sessions[workoutKey()]=newWorkout();
+  }
+}
 if(a==='new'){state.review=null;state.sessions[workoutKey()]=newWorkout();hint=false;gapRuleOpen=false}
 if(a==='reviewSaved'){
   if(!state.saved.length)return;
@@ -859,10 +892,10 @@ document.addEventListener('keydown',e=>{
   if(e.ctrlKey||e.altKey||e.metaKey||e.repeat||page()!=='practice'||e.target.matches?.('input,textarea,select'))return;
   const s=session(),id=s.ids[s.pos];
   if(!id)return;
-  if(state.mode!=='gap'&&/^[1-4]$/.test(e.key)){
+  if(!['gap','flash'].includes(state.mode)&&/^[1-4]$/.test(e.key)){
     e.preventDefault();
     answer(s.layouts[id][Number(e.key)-1]);
-  }else if(e.key==='Enter'&&s.answers[id]!==undefined&&!e.target.closest?.('button,a')){
+  }else if(e.key==='Enter'&&(state.mode==='flash'||s.answers[id]!==undefined)&&!e.target.closest?.('button,a')){
     e.preventDefault();
     action('next');
   }
